@@ -11,9 +11,16 @@ There are two Tokenizers in this repository, both of which can perform the 3 pri
 
 Finally, the script [train.py](train.py) trains both of these tokenizers on the input text [taylorswift.txt](taylorswift.txt) (this is the Wikipedia entry for her kek) and saves the vocab to disk for visualization. This script runs in about 25 seconds on my (M1) MacBook.
 
-## call for action
+### reproducing tiktoken GPT-4
 
-Similar to my earlier repo [llama2.c](https://github.com/karpathy/llama2.c), here I will list (and accept PRs for) any versions of this code that might implement or specialize this algorithm for different use cases, or implement it in different languages (e.g. C, Rust, JavaScript, etc.). One of these forks could then become a standard implementation people wish to use for Tokenization in LLMs, to deprecate the use of sentencepiece. I will then try to keep this repo as a small, clean reference for tokenization algorithms.
+The correctness of this code is also established by exactly reproducing the [tiktoken](https://github.com/openai/tiktoken) library, and its encoding/decoding with the GPT-4 tokenizer. In particular, we can take the `_mergeable_ranks` from the GPT4 tokenizer:
+
+```
+enc = tiktoken.get_encoding("cl100k_base")
+mergeable_ranks = enc._mergeable_ranks
+```
+
+And use them to construct a `RegexTokenizer` that will exactly reproduce the tokenization of GPT4. Run and step through the file [test_gpt4.py](test_gpt4.py) for details.
 
 ## License
 

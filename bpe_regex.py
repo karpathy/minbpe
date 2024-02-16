@@ -55,6 +55,9 @@ class Tokenizer:
         self.merges = {}
         self.vocab = {idx: bytes([idx]) for idx in range(256)}
         self.pattern = re.compile(GPT4_SPLIT_PATTERN)
+        # ugly optional part, only needed for GPT-4 tiktoken compatibility
+        self.byte_shuffle = None
+        self.inverse_byte_shuffle = None
 
     def train(self, text, vocab_size, verbose=False):
         assert vocab_size >= 256
@@ -97,13 +100,19 @@ class Tokenizer:
     def decode(self, ids):
         # given ids (list of integers), return Python string
         text_bytes = b"".join(self.vocab[idx] for idx in ids)
+        if self.inverse_byte_shuffle is not None:
+            text_bytes = bytes(self.inverse_byte_shuffle[b] for b in text_bytes)
         text = text_bytes.decode("utf-8", errors="replace")
         return text
 
     def _encode_chunk(self, text):
         # given a string text, return the token ids
         text_bytes = text.encode("utf-8") # raw bytes
-        ids = list(text_bytes) # list of integers in range 0..255
+        # needed to repro GPT-4 because OpenAI shuffles its 1-byte tokens order
+        if self.byte_shuffle is not None:
+            text_bytes = bytes(self.byte_shuffle[b] for b in text_bytes)
+        # let's begin. first, convert all bytes to integers in range 0..255
+        ids = list(text_bytes)
         while len(ids) >= 2:
             # find the pair with the lowest merge index
             stats = get_stats(ids)
