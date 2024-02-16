@@ -12,9 +12,10 @@ But:
 
 import regex as re
 
-# the GPT-4 text split pattern, see
+# the main GPT text split patterns, see
 # https://github.com/openai/tiktoken/blob/main/tiktoken_ext/openai_public.py
-SPLIT_PATTERN = re.compile(r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]++[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+""")
+GPT2_SPLIT_PATTERN = r"""'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+"""
+GPT4_SPLIT_PATTERN = r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]++[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+"""
 
 
 def get_stats(ids):
@@ -50,16 +51,17 @@ def merge(ids, pair, idx):
 class Tokenizer:
 
     def __init__(self):
-        # by default, we have a vocab size of 256 (all bytes) and no merges
+        # default to vocab size of 256 (all bytes), no merges and gpt-4 pattern
         self.merges = {}
         self.vocab = {idx: bytes([idx]) for idx in range(256)}
+        self._pat_str = re.compile(GPT4_SPLIT_PATTERN)
 
     def train(self, text, vocab_size, verbose=False):
         assert vocab_size >= 256
         num_merges = vocab_size - 256
 
         # split the text up into text chunks
-        text_chunks = re.findall(SPLIT_PATTERN, text)
+        text_chunks = re.findall(self._pat_str, text)
 
         # input text preprocessing
         ids = [list(ch.encode("utf-8")) for ch in text_chunks]
@@ -119,7 +121,7 @@ class Tokenizer:
 
     def encode(self, text):
         # split text into chunks of text by categories defined in regex pattern
-        text_chunks = re.findall(SPLIT_PATTERN, text)
+        text_chunks = re.findall(self._pat_str, text)
         # all chunks of text are encoded separately, then results are joined
         ids = []
         for chunk in text_chunks:
