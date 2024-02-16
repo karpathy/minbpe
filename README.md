@@ -22,6 +22,8 @@ mergeable_ranks = enc._mergeable_ranks
 
 And use them to construct a `RegexTokenizer` that will exactly reproduce the tokenization of GPT4. Run and step through the file [test_gpt4.py](test_gpt4.py) for details.
 
+Note that the parity is not complete because we do not handle special tokens.
+
 ## License
 
 MIT
