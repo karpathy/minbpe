@@ -11,6 +11,10 @@ There are two Tokenizers in this repository, both of which can perform the 3 pri
 
 Finally, the script [train.py](train.py) trains both of these tokenizers on the input text [taylorswift.txt](taylorswift.txt) (this is the Wikipedia entry for her kek) and saves the vocab to disk for visualization. This script runs in about 25 seconds on my (M1) MacBook.
 
-# License
+## call for action
+
+Similar to my earlier repo [llama2.c](https://github.com/karpathy/llama2.c), here I will list (and accept PRs for) any versions of this code that might implement or specialize this algorithm for different use cases, or implement it in different languages (e.g. C, Rust, JavaScript, etc.). One of these forks could then become a standard implementation people wish to use for Tokenization in LLMs, to deprecate the use of sentencepiece. I will then try to keep this repo as a small, clean reference for tokenization algorithms.
+
+## License
 
 MIT
