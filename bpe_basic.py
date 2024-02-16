@@ -39,7 +39,7 @@ def merge(ids, pair, idx):
     return newids
 
 
-class Tokenizer:
+class BasicTokenizer:
 
     def __init__(self):
         # by default, we have a vocab size of 256 (all bytes) and no merges
@@ -126,7 +126,7 @@ if __name__ == "__main__":
     """
 
     text = "aaabdaaabac"
-    tokenizer = Tokenizer()
+    tokenizer = BasicTokenizer()
 
     # we do 3 merges
     tokenizer.train(text, 256 + 3)
