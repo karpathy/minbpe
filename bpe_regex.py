@@ -54,14 +54,14 @@ class Tokenizer:
         # default to vocab size of 256 (all bytes), no merges and gpt-4 pattern
         self.merges = {}
         self.vocab = {idx: bytes([idx]) for idx in range(256)}
-        self._pat_str = re.compile(GPT4_SPLIT_PATTERN)
+        self.pattern = re.compile(GPT4_SPLIT_PATTERN)
 
     def train(self, text, vocab_size, verbose=False):
         assert vocab_size >= 256
         num_merges = vocab_size - 256
 
         # split the text up into text chunks
-        text_chunks = re.findall(self._pat_str, text)
+        text_chunks = re.findall(self.pattern, text)
 
         # input text preprocessing
         ids = [list(ch.encode("utf-8")) for ch in text_chunks]
@@ -121,7 +121,7 @@ class Tokenizer:
 
     def encode(self, text):
         # split text into chunks of text by categories defined in regex pattern
-        text_chunks = re.findall(self._pat_str, text)
+        text_chunks = re.findall(self.pattern, text)
         # all chunks of text are encoded separately, then results are joined
         ids = []
         for chunk in text_chunks:
