@@ -77,4 +77,9 @@ print(tokenizer.decode(tokenizer.encode(text))) # ours back to text
 print("OK" if enc.encode(text) == tokenizer.encode(text) else "FAIL")
 print("OK" if text == tokenizer.decode(tokenizer.encode(text)) else "FAIL")
 
-# let's also tokenize all of taylor swift
+# let's also tokenize all of taylor swift, a bigger document just to make sure
+text = open("taylorswift.txt", "r", encoding="utf-8").read()
+t1 = enc.encode(text) # tiktoken
+t2 = tokenizer.encode(text) # ours
+print("OK" if t1 == t2 else "FAIL")
+print("OK" if text == tokenizer.decode(tokenizer.encode(text)) else "FAIL")
