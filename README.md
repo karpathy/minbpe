@@ -50,6 +50,13 @@ print(tokenizer.encode(text))
 
 (you'll have to `pip install tiktoken` to run).
 
+## Running Tests
+1. To run the unit tests for the tokenizers, you'll need to install `pytest`. If you haven't installed it yet, you can do so using pip: `pip install pytest
+`
+2. Once pytest is installed, you can run the tests using the following command `pytest .` (or):
+```bash
+pytest test_tokenizer.py
+```
 ## todos
 
 - move the files into minbpe directory / make a nice small package?
