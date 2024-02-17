@@ -12,6 +12,41 @@ There are two primary Tokenizers in this repository, both of which can perform t
 
 Finally, the script [train.py](train.py) trains the two major tokenizers on the input text [taylorswift.txt](taylorswift.txt) (this is the Wikipedia entry for her kek) and saves the vocab to disk for visualization. This script runs in about 25 seconds on my (M1) MacBook.
 
+## usage
+
+All of the files above are very short and thoroughly commented, and also contain a usage example on the bottom of the file. As a quick example, following along the [Wikipedia article on BPE](https://en.wikipedia.org/wiki/Byte_pair_encoding), we can reproduce it as follows:
+
+```python
+from bpe_basic import BasicTokenizer
+tokenizer = BasicTokenizer()
+text = "aaabdaaabac"
+tokenizer.train(text, 256 + 3) # 256 are the byte tokens, then do 3 merges
+print(tokenizer.encode(text))
+# [258, 100, 258, 97, 99]
+print(tokenizer.decode([258, 100, 258, 97, 99]))
+# aaabdaaabac
+```
+
+This is exactly as expected, please see bottom of [bpe_basic](bpe_basic.py) for more details. To use the `GPT4Tokenizer`, simple example and comparison to [tiktoken](https://github.com/openai/tiktoken):
+
+```python
+text = "hello123!!!? (안녕하세요!) 😉"
+
+# tiktoken
+import tiktoken
+enc = tiktoken.get_encoding("cl100k_base")
+print(enc.encode(text))
+# [15339, 4513, 12340, 30, 320, 31495, 230, 75265, 243, 92245, 16715, 57037]
+
+# ours
+from bpe_gpt4 import GPT4Tokenizer
+tokenizer = GPT4Tokenizer()
+print(tokenizer.encode(text))
+# [15339, 4513, 12340, 30, 320, 31495, 230, 75265, 243, 92245, 16715, 57037]
+```
+
+(you'll have to `pip install tiktoken` to run).
+
 ## todos
 
 - handle special tokens (?)
