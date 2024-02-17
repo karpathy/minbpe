@@ -9,42 +9,13 @@ But:
 - Does not handle any special tokens.
 """
 
-def get_stats(ids):
-    """
-    Given a list of integers, return a dictionary of counts of consecutive pairs
-    Example: [1, 2, 3, 1, 2] -> {(1, 2): 2, (2, 3): 1, (3, 1): 1}
-    """
-    counts = {}
-    for pair in zip(ids, ids[1:]): # iterate consecutive elements
-        counts[pair] = counts.get(pair, 0) + 1
-    return counts
+from bpe_base import Tokenizer, get_stats, merge
 
 
-def merge(ids, pair, idx):
-    """
-    In the list of integers (ids), replace all consecutive occurrences
-    of pair with the new integer token idx
-    Example: ids=[1, 2, 3, 1, 2], pair=(1, 2), idx=4 -> [4, 3, 4]
-    """
-    newids = []
-    i = 0
-    while i < len(ids):
-        # if not at the very last position AND the pair matches, replace it
-        if ids[i] == pair[0] and i < len(ids) - 1 and ids[i+1] == pair[1]:
-            newids.append(idx)
-            i += 2
-        else:
-            newids.append(ids[i])
-            i += 1
-    return newids
-
-
-class BasicTokenizer:
+class BasicTokenizer(Tokenizer):
 
     def __init__(self):
-        # by default, we have a vocab size of 256 (all bytes) and no merges
-        self.merges = {}
-        self.vocab = {idx: bytes([idx]) for idx in range(256)}
+        super().__init__()
 
     def train(self, text, vocab_size, verbose=False):
         assert vocab_size >= 256

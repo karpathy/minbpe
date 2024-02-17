@@ -15,15 +15,5 @@ for TokenizerClass, name in zip([BasicTokenizer, RegexTokenizer], ["basic", "reg
     # construct the Tokenizer object and kick off verbose training
     tokenizer = TokenizerClass()
     tokenizer.train(text, 512, verbose=True)
-
-    # pretty print the final vocab into a file
-    vocab_file = f"{name}.vocab"
-    with open(vocab_file, "w", encoding="utf-8") as f:
-        for idx, token in tokenizer.vocab.items():
-            if idx < 256:
-                # the first 256 tokens are just bytes, render them in <0xHH> format
-                token_string = f"<0x{idx:02x}>"
-            else:
-                # otherwise let's attempt to render the token as a string
-                token_string = token.decode('utf-8', errors='replace')
-            f.write(f"{token_string} {idx}\n")
+    # writes two files in current directory: name.model, and name.vocab
+    tokenizer.save(name)

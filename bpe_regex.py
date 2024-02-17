@@ -11,6 +11,8 @@ But:
 """
 
 import regex as re
+from bpe_base import Tokenizer, get_stats, merge
+
 
 # the main GPT text split patterns, see
 # https://github.com/openai/tiktoken/blob/main/tiktoken_ext/openai_public.py
@@ -18,50 +20,19 @@ GPT2_SPLIT_PATTERN = r"""'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}
 GPT4_SPLIT_PATTERN = r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]++[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+"""
 
 
-def get_stats(ids):
-    """
-    Given a list of integers, return a dictionary of counts of consecutive pairs
-    Example: [1, 2, 3, 1, 2] -> {(1, 2): 2, (2, 3): 1, (3, 1): 1}
-    """
-    counts = {}
-    for pair in zip(ids, ids[1:]): # iterate consecutive elements
-        counts[pair] = counts.get(pair, 0) + 1
-    return counts
-
-
-def merge(ids, pair, idx):
-    """
-    In the list of integers (ids), replace all consecutive occurrences
-    of pair with the new integer token idx
-    Example: ids=[1, 2, 3, 1, 2], pair=(1, 2), idx=4 -> [4, 3, 4]
-    """
-    newids = []
-    i = 0
-    while i < len(ids):
-        # if not at the very last position AND the pair matches, replace it
-        if ids[i] == pair[0] and i < len(ids) - 1 and ids[i+1] == pair[1]:
-            newids.append(idx)
-            i += 2
-        else:
-            newids.append(ids[i])
-            i += 1
-    return newids
-
-
-class RegexTokenizer:
+class RegexTokenizer(Tokenizer):
 
     def __init__(self):
-        # default to vocab size of 256 (all bytes), no merges and gpt-4 pattern
-        self.merges = {}
-        self.vocab = {idx: bytes([idx]) for idx in range(256)}
-        self.pattern = re.compile(GPT4_SPLIT_PATTERN)
+        super().__init__()
+        self.pattern = GPT4_SPLIT_PATTERN
+        self.compiled_pattern = re.compile(self.pattern)
 
     def train(self, text, vocab_size, verbose=False):
         assert vocab_size >= 256
         num_merges = vocab_size - 256
 
         # split the text up into text chunks
-        text_chunks = re.findall(self.pattern, text)
+        text_chunks = re.findall(self.compiled_pattern, text)
 
         # input text preprocessing
         ids = [list(ch.encode("utf-8")) for ch in text_chunks]
@@ -121,7 +92,7 @@ class RegexTokenizer:
 
     def encode(self, text):
         # split text into chunks of text by categories defined in regex pattern
-        text_chunks = re.findall(self.pattern, text)
+        text_chunks = re.findall(self.compiled_pattern, text)
         # all chunks of text are encoded separately, then results are joined
         ids = []
         for chunk in text_chunks:
@@ -181,5 +152,16 @@ In Aymara mythology, llamas are important beings. The Heavenly Llama is said to 
     # verify that decode(encode(x)) == x
     print("OK" if tokenizer.decode(tokenizer.encode(text)) == text else "FAIL")
 
-    # for fun if you like
-    # print(tokenizer.vocab)
+    # verify that save/load work as expected
+    ids = tokenizer.encode(text)
+
+    # save the tokenizer
+    tokenizer.save("toy")
+    # re-load the tokenizer
+    tokenizer = RegexTokenizer()
+    tokenizer.load("toy.model")
+
+    # verify that decode(encode(x)) == x
+    print("OK" if tokenizer.decode(ids) == text else "FAIL")
+    print("OK" if tokenizer.decode(tokenizer.encode(text)) == text else "FAIL")
+    print("OK" if tokenizer.encode(text) == ids else "FAIL")
