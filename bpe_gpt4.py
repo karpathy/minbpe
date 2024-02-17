@@ -117,9 +117,6 @@ if __name__ == "__main__":
     # vs.
     tokenizer = GPT4Tokenizer()
     # fight!
-    
-    tokenizer.push_to_hub("ArthurZ/gpt-min", private=True)
-    tokenizer = GPT4Tokenizer.from_pretrained("ArthurZ/gpt-min")
 
     text = "hello world!!!? (안녕하세요!) lol123 😉"
     print(text)
