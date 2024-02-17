@@ -142,8 +142,8 @@ class RegexTokenizer:
     def load(self, filename):
         assert filename[-6:] == ".vocab", "File must be a .vocab file"
         content = open(filename, "rb").read()
-        return {
-            base64.b64decode(token): int(rank)
+        self.vocab = {
+            int(rank): base64.b64decode(token)
             for token, rank in (line.split() for line in content.splitlines() if line)
         }
 
