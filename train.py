@@ -4,8 +4,8 @@ The whole thing runs in ~25 seconds on my laptop.
 """
 
 # feel free to use either
-from bpe_regex import Tokenizer as RegexTokenizer
-from bpe_basic import Tokenizer as BasicTokenizer
+from bpe_regex import RegexTokenizer
+from bpe_basic import BasicTokenizer
 
 # open some text and train a vocab of 512 tokens
 text = open("taylorswift.txt", "r", encoding="utf-8").read()
