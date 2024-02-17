@@ -9,6 +9,8 @@ But:
 - Does not handle any special tokens.
 """
 
+import base64
+
 def get_stats(ids):
     """
     Given a list of integers, return a dictionary of counts of consecutive pairs
@@ -101,6 +103,22 @@ class BasicTokenizer:
             idx = self.merges[pair]
             ids = merge(ids, pair, idx)
         return ids
+    
+    def save(self, filename):
+        if filename[-6:] != ".vocab":
+            filename += ".vocab"
+        
+        with open(filename, "wb") as f:
+            for rank, token in sorted(self.vocab.items(), key=lambda x: x[1]):
+               f.write(base64.b64encode(token) + b" " + str(rank).encode() + b"\n")
+
+    def load(self, filename):
+        assert filename[-6:] == ".vocab", "File must be a .vocab file"
+        content = open(filename, "rb").read()
+        return {
+            base64.b64decode(token): int(rank)
+            for token, rank in (line.split() for line in content.splitlines() if line)
+        }
 
 if __name__ == "__main__":
 

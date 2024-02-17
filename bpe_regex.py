@@ -11,6 +11,7 @@ But:
 """
 
 import regex as re
+import base64
 
 # the main GPT text split patterns, see
 # https://github.com/openai/tiktoken/blob/main/tiktoken_ext/openai_public.py
@@ -129,6 +130,22 @@ class RegexTokenizer:
             chunk_ids = self._encode_chunk(chunk_bytes)
             ids.extend(chunk_ids)
         return ids
+    
+    def save(self, filename):
+        if filename[-6:] != ".vocab":
+            filename += ".vocab"
+        
+        with open(filename, "wb") as f:
+            for rank, token in sorted(self.vocab.items(), key=lambda x: x[1]):
+               f.write(base64.b64encode(token) + b" " + str(rank).encode() + b"\n")
+
+    def load(self, filename):
+        assert filename[-6:] == ".vocab", "File must be a .vocab file"
+        content = open(filename, "rb").read()
+        return {
+            base64.b64decode(token): int(rank)
+            for token, rank in (line.split() for line in content.splitlines() if line)
+        }
 
 
 if __name__ == "__main__":
