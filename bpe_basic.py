@@ -73,38 +73,10 @@ class BasicTokenizer(Tokenizer):
             ids = merge(ids, pair, idx)
         return ids
 
-if __name__ == "__main__":
-
-    """
-    Quick unit test, following along the Wikipedia example:
-    https://en.wikipedia.org/wiki/Byte_pair_encoding
-
-    According to Wikipedia, running bpe on the the input string:
-    "aaabdaaabac"
-
-    for 3 merges will result in string:
-    "XdXac"
-
-    where:
-    X=ZY
-    Y=ab
-    Z=aa
-
-    Keep in mind that for us a=97, b=98, c=99, d=100 (ASCII values)
-    so Z will be 256, Y will be 257, X will be 258.
-
-    So we expect the output list of ids to be [258, 100, 258, 97, 99]
-    """
-
-    text = "aaabdaaabac"
-    tokenizer = BasicTokenizer()
-
-    # we do 3 merges
-    tokenizer.train(text, 256 + 3)
-
-    # verify the correct expected result
-    ids = tokenizer.encode(text)
-    print("OK" if ids == [258, 100, 258, 97, 99] else "FAIL")
-
-    # verify that decode(encode(x)) == x
-    print("OK" if tokenizer.decode(tokenizer.encode(text)) == text else "FAIL")
+# Example of usage (removed since covered by pytest)
+# text = "aaabdaaabac"
+# tokenizer = BasicTokenizer()
+# tokenizer.train(text, 256 + 3)
+# ids = tokenizer.encode(text)
+# print("OK" if ids == [258, 100, 258, 97, 99] else "FAIL")
+# print("OK" if tokenizer.decode(tokenizer.encode(text)) == text else "FAIL")
