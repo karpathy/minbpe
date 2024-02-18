@@ -62,8 +62,11 @@ to run the tests.
 
 ## todos
 
-- write more optimized versions, both in Python and/or C/Rust?
-- handle special tokens? think through...
+- write a more optimized Python version that could run over large files and big vocabs
+- write an even more optimized C or Rust version (think through)
+- rename GPT4Tokenizer to GPTTokenizer and support GPT-2 as well?
+- write a LlamaTokenizer similar to GPT4Tokenizer (i.e. attempt sentencepiece equivalent)
+- handle special tokens
 - video coming soon ;)
 
 ## License
