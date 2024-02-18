@@ -3,7 +3,7 @@ Implements the GPT-4 Tokenizer with a light wrapper around the RegexTokenizer.
 """
 
 import tiktoken
-from bpe_regex import RegexTokenizer
+from .regex import RegexTokenizer
 
 
 def bpe(mergeable_ranks, token, max_rank):

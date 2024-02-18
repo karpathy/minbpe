@@ -2,16 +2,15 @@ import pytest
 import tiktoken
 import os
 
-from bpe_basic import BasicTokenizer
-from bpe_gpt4 import GPT4Tokenizer
-from bpe_regex import RegexTokenizer
+from minbpe import BasicTokenizer, RegexTokenizer, GPT4Tokenizer
 
 # a few strings to test the tokenizers on
+taylorswift_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "taylorswift.txt")
 test_strings = [
     "", # empty string
     "?", # single character
     "hello world!!!? (안녕하세요!) lol123 😉", # fun small string
-    open("taylorswift.txt", "r", encoding="utf-8").read(), # big string
+    open(taylorswift_file, "r", encoding="utf-8").read(), # big string
 ]
 
 # test encode/decode identity for a few different strings
@@ -82,6 +81,7 @@ def test_save_load():
     # verify that save/load work as expected
     ids = tokenizer.encode(text)
 
+    # TODO use a proper temporary directory for I/O things below
     # save the tokenizer
     tokenizer.save("test_tokenizer_tmp")
 

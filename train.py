@@ -3,12 +3,10 @@ Train our Tokenizers on some data, just to see them in action.
 The whole thing runs in ~25 seconds on my laptop.
 """
 
-# feel free to use either
-from bpe_regex import RegexTokenizer
-from bpe_basic import BasicTokenizer
+from minbpe import BasicTokenizer, RegexTokenizer
 
 # open some text and train a vocab of 512 tokens
-text = open("taylorswift.txt", "r", encoding="utf-8").read()
+text = open("tests/taylorswift.txt", "r", encoding="utf-8").read()
 
 for TokenizerClass, name in zip([BasicTokenizer, RegexTokenizer], ["basic", "regex"]):
 

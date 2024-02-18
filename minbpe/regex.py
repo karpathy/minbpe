@@ -11,7 +11,7 @@ But:
 """
 
 import regex as re
-from bpe_base import Tokenizer, get_stats, merge
+from .base import Tokenizer, get_stats, merge
 
 
 # the main GPT text split patterns, see
