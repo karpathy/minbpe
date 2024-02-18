@@ -77,3 +77,14 @@ class GPT4Tokenizer(RegexTokenizer):
         text_bytes = bytes(self.inverse_byte_shuffle[b] for b in text_bytes)
         text = text_bytes.decode("utf-8", errors="replace")
         return text
+
+    # save/load would require some thought.
+    # we'd have to change save/load of base to add support for byte_shuffle...
+    # alternatively, we could move byte_shuffle to base class, but that would
+    # mean that we're making ugly our beautiful Tokenizer just to support
+    # the GPT-4 tokenizer and its weird historical quirks around byte_shuffle.
+    def save(self, file_prefix):
+        raise NotImplementedError("GPT4Tokenizer cannot be saved.")
+
+    def load(self, model_file):
+        raise NotImplementedError("GPT4Tokenizer cannot be loaded.")
