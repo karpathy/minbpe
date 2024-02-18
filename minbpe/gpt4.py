@@ -1,5 +1,7 @@
 """
-Implements the GPT-4 Tokenizer with a light wrapper around the RegexTokenizer.
+Implements the GPT-4 Tokenizer as a light wrapper around the RegexTokenizer.
+Note that this is a pretrained tokenizer. By default and inside init(), it
+loads the pretrained tokenizer from the `cl100k_base` tokenizer of tiktoken.
 """
 
 import tiktoken
@@ -77,6 +79,10 @@ class GPT4Tokenizer(RegexTokenizer):
         text_bytes = bytes(self.inverse_byte_shuffle[b] for b in text_bytes)
         text = text_bytes.decode("utf-8", errors="replace")
         return text
+
+    # this is a pretrained tokenizer, it is not intended to be trained
+    def train(self, text, vocab_size, verbose=False):
+        raise NotImplementedError
 
     # save/load would require some thought.
     # we'd have to change save/load of base to add support for byte_shuffle...
