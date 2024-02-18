@@ -100,9 +100,9 @@ class Tokenizer:
         # write the model: to be used in load() later
         model_file = file_prefix + ".model"
         with open(model_file, 'w') as f:
-            # write the pattern on the first line
+            # write the version, pattern and merges, that's all that's needed
+            f.write(f"minbpe v1\n")
             f.write(f"{self.pattern}\n")
-            # the merges dict is the only critical information we need
             for idx1, idx2 in self.merges:
                 f.write(f"{idx1} {idx2}\n")
         # write the vocab: for the human to look at
@@ -135,7 +135,10 @@ class Tokenizer:
         merges = {}
         idx = 256
         with open(model_file, 'r') as f:
-            # read the pattern from the first line
+            # read the version
+            version = f.readline().strip()
+            assert version == "minbpe v1"
+            # read the pattern
             self.pattern = f.readline().strip()
             # read the merges
             for line in f:
