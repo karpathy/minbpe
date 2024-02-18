@@ -5,7 +5,8 @@ import os
 from minbpe import BasicTokenizer, RegexTokenizer, GPT4Tokenizer
 
 # a few strings to test the tokenizers on
-taylorswift_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "taylorswift.txt")
+dirname = os.path.dirname(os.path.abspath(__file__))
+taylorswift_file = os.path.join(dirname, "taylorswift.txt")
 test_strings = [
     "", # empty string
     "?", # single character
