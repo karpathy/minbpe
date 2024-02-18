@@ -41,13 +41,10 @@ class RegexTokenizer(Tokenizer):
         merges = {} # (int, int) -> int
         vocab = {idx: bytes([idx]) for idx in range(256)} # idx -> bytes
         for i in range(num_merges):
-            # count up the number of times every consecutive pair appears
-            chunk_stats = [get_stats(chunk_ids) for chunk_ids in ids]
-            # combine the pair counts from all chunks by summing them up
             stats = {}
-            for chstat in chunk_stats:
-                for pair, count in chstat.items():
-                    stats[pair] = stats.get(pair, 0) + count
+            # count up the number of times every consecutive pair appears
+            # combine the pair counts from all chunks by summing them up
+            [get_stats(chunk_ids, stats) for chunk_ids in ids]
             # find the pair with the highest count
             pair = max(stats, key=stats.get)
             # mint a new token: assign it the next available id
