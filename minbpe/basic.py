@@ -35,7 +35,7 @@ class BasicTokenizer(Tokenizer):
             pair = max(stats, key=stats.get)
             # mint a new token: assign it the next available id
             idx = 256 + i
-            # replace all occurences of pair in ids with idx
+            # replace all occurrences of pair in ids with idx
             ids = merge(ids, pair, idx)
             # save the merge
             merges[pair] = idx

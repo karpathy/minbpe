@@ -38,7 +38,7 @@ def test_wikipedia_example(tokenizer_factory):
     Quick unit test, following along the Wikipedia example:
     https://en.wikipedia.org/wiki/Byte_pair_encoding
 
-    According to Wikipedia, running bpe on the the input string:
+    According to Wikipedia, running bpe on the input string:
     "aaabdaaabac"
 
     for 3 merges will result in string:
