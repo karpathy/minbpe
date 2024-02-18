@@ -50,10 +50,13 @@ print(tokenizer.encode(text))
 
 (you'll have to `pip install tiktoken` to run).
 
+## tests
+
+The unit tests use pytest. First `pip install pytest` if you haven't already, then `pytest .` to run.
+
 ## todos
 
 - move the files into minbpe directory / make a nice small package?
-- separate out and make proper tests (e.g. pytest)
 - write more optimized versions, both in Python and/or C/Rust?
 - handle special tokens? think through...
 - video coming soon ;)

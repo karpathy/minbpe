@@ -77,29 +77,3 @@ class GPT4Tokenizer(RegexTokenizer):
         text_bytes = bytes(self.inverse_byte_shuffle[b] for b in text_bytes)
         text = text_bytes.decode("utf-8", errors="replace")
         return text
-
-if __name__ == "__main__":
-    # let's take it for a spin!
-
-    # tiktoken
-    enc = tiktoken.get_encoding("cl100k_base")
-    # vs.
-    tokenizer = GPT4Tokenizer()
-    # fight!
-
-    text = "hello world!!!? (안녕하세요!) lol123 😉"
-    print(text)
-    print(enc.encode(text)) # tiktoken
-    print(tokenizer.encode(text)) # ours
-    print(tokenizer.decode(tokenizer.encode(text))) # ours back to text
-
-    # two quick tests: equality (to tiktoken) and identity
-    print("OK" if enc.encode(text) == tokenizer.encode(text) else "FAIL")
-    print("OK" if text == tokenizer.decode(tokenizer.encode(text)) else "FAIL")
-
-    # let's also tokenize all of taylor swift, a bigger document just to make sure
-    text = open("taylorswift.txt", "r", encoding="utf-8").read()
-    t1 = enc.encode(text) # tiktoken
-    t2 = tokenizer.encode(text) # ours
-    print("OK" if t1 == t2 else "FAIL")
-    print("OK" if text == tokenizer.decode(tokenizer.encode(text)) else "FAIL")
