@@ -77,5 +77,3 @@ class GPT4Tokenizer(RegexTokenizer):
         text_bytes = bytes(self.inverse_byte_shuffle[b] for b in text_bytes)
         text = text_bytes.decode("utf-8", errors="replace")
         return text
-
-# unit test are moved to test_tokenizer.py

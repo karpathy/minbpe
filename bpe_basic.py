@@ -72,11 +72,3 @@ class BasicTokenizer(Tokenizer):
             idx = self.merges[pair]
             ids = merge(ids, pair, idx)
         return ids
-
-# Example of usage (removed since covered by pytest)
-# text = "aaabdaaabac"
-# tokenizer = BasicTokenizer()
-# tokenizer.train(text, 256 + 3)
-# ids = tokenizer.encode(text)
-# print("OK" if ids == [258, 100, 258, 97, 99] else "FAIL")
-# print("OK" if tokenizer.decode(tokenizer.encode(text)) == text else "FAIL")
