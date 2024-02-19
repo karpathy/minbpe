@@ -105,7 +105,7 @@ class Tokenizer:
         model_file = file_prefix + ".model"
         with open(model_file, 'w') as f:
             # write the version, pattern and merges, that's all that's needed
-            f.write(f"minbpe v1\n")
+            f.write("minbpe v1\n")
             f.write(f"{self.pattern}\n")
             # write the special tokens, first the number of them, then each one
             f.write(f"{len(self.special_tokens)}\n")
