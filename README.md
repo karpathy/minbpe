@@ -126,6 +126,10 @@ $ pytest -v .
 
 to run the tests. (-v is verbose, slightly prettier).
 
+## exercise
+
+For those trying to study BPE, here is the advised progression exercise for how you can build your own minbpe step by step. See [exercise.md](exercise.md).
+
 ## todos
 
 - write a more optimized Python version that could run over large files and big vocabs
