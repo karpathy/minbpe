@@ -55,10 +55,10 @@ print(tokenizer.encode(text))
 We use the pytest library for tests. All of them are located in the `tests/` directory. First `pip install pytest` if you haven't already, then:
 
 ```bash
-$ pytest .
+$ pytest -v .
 ```
 
-to run the tests.
+to run the tests. (-v is verbose, slightly prettier).
 
 ## todos
 
