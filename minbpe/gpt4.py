@@ -44,12 +44,20 @@ def recover_merges(mergeable_ranks):
 
     return merges
 
+GPT4_SPLIT_PATTERN = r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]++[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+"""
+GPT4_SPECIAL_TOKENS = {
+    '<|endoftext|>': 100257,
+    '<|fim_prefix|>': 100258,
+    '<|fim_middle|>': 100259,
+    '<|fim_suffix|>': 100260,
+    '<|endofprompt|>': 100276
+}
 
 class GPT4Tokenizer(RegexTokenizer):
     """Lightweight wrapper on RegexTokenizer that matches GPT-4's tokenizer."""
 
     def __init__(self):
-        super().__init__()
+        super().__init__(pattern=GPT4_SPLIT_PATTERN, special_tokens=GPT4_SPECIAL_TOKENS)
         # get the official tokenizer and its merges
         enc = tiktoken.get_encoding("cl100k_base")
         mergeable_ranks = enc._mergeable_ranks
