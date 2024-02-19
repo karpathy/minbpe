@@ -13,9 +13,11 @@ There are two Tokenizers in this repository, both of which can perform the 3 pri
 
 Finally, the script [train.py](train.py) trains the two major tokenizers on the input text [tests/taylorswift.txt](tests/taylorswift.txt) (this is the Wikipedia entry for her kek) and saves the vocab to disk for visualization. This script runs in about 25 seconds on my (M1) MacBook.
 
-## usage
+All of the files above are very short and thoroughly commented, and also contain a usage example on the bottom of the file.
 
-All of the files above are very short and thoroughly commented, and also contain a usage example on the bottom of the file. As a quick example, following along the [Wikipedia article on BPE](https://en.wikipedia.org/wiki/Byte_pair_encoding), we can reproduce it as follows:
+## quick start
+
+As the simplest example, we can reproduce the [Wikipedia article on BPE](https://en.wikipedia.org/wiki/Byte_pair_encoding) as follows:
 
 ```python
 from minbpe import BasicTokenizer
@@ -30,7 +32,11 @@ tokenizer.save("toy")
 # writes two files: toy.model (for loading) and toy.vocab (for viewing)
 ```
 
-The result above is exactly as expected, please see bottom of [minbpe/basic.py](minbpe/basic.py) for more details. To use the `GPT4Tokenizer`, simple example and comparison to [tiktoken](https://github.com/openai/tiktoken):
+According to Wikipedia, running bpe on the input string: "aaabdaaabac" for 3 merges results in the string: "XdXac" where  X=ZY, Y=ab, and Z=aa. The tricky thing to note is that minbpe always allocates the 256 individual bytes as tokens, and then merges bytes as needed from there. So for us a=97, b=98, c=99, d=100 (their [ASCII](https://www.asciitable.com) values). Then when (a,a) is merged to Z, Z will become 256. Likewise Y will become 257 and X 258. So we start with the 256 bytes, and do 3 merges to get to the result above, with the expected output of [258, 100, 258, 97, 99].
+
+## inference: GPT-4 comparison
+
+We can verify that the `RegexTokenizer` has feature parity with the GPT-4 tokenizer from [tiktoken](https://github.com/openai/tiktoken) as follows:
 
 ```python
 text = "hello123!!!? (안녕하세요!) 😉"
@@ -48,7 +54,49 @@ print(tokenizer.encode(text))
 # [15339, 4513, 12340, 30, 320, 31495, 230, 75265, 243, 92245, 16715, 57037]
 ```
 
-(you'll have to `pip install tiktoken` to run).
+(you'll have to `pip install tiktoken` to run). Under the hood, the `GPT4Tokenizer` is just a light wrapper around `RegexTokenizer`, passing in the merges and the special tokens of GPT-4.
+
+## training
+
+Unlike tiktoken, this code allows you to train your own tokenizer. In principle and to my knowledge, if you train the `RegexTokenizer` on a large dataset with a vocabulary size of 100K, you would reproduce the GPT-4 tokenizer.
+
+There are two paths you can follow. First, you can decide that you don't want the complexity of splitting and preprocessing text with regex patterns, and you also don't care for special tokens. In that case, reach for the `BasicTokenizer`. You can train it, and then encode and decode for example as follows:
+
+```python
+from minbpe import BasicTokenizer
+tokenizer = BasicTokenizer()
+tokenizer.train(very_long_training_string, vocab_size=4096)
+tokenizer.encode("hello world") # string -> tokens
+tokenizer.decode([1000, 2000, 3000]) # tokens -> string
+tokenizer.save("mymodel") # writes mymodel.model and mymodel.vocab
+tokenizer.load("mymodel.model") # loads the model back, the vocab is just for vis
+```
+
+If you instead want to follow along with OpenAI did for their text tokenizer, it's a good idea to adopt their approach of using regex pattern to split the text by categories. The GPT-4 pattern is a default with the `RegexTokenizer`, so you'd simple do something like:
+
+```python
+from minbpe import RegexTokenizer
+tokenizer = RegexTokenizer()
+tokenizer.train(very_long_training_string, vocab_size=32768)
+tokenizer.encode("hello world") # string -> tokens
+tokenizer.decode([1000, 2000, 3000]) # tokens -> string
+tokenizer.save("tok32k") # writes tok32k.model and tok32k.vocab
+tokenizer.load("tok32k.model") # loads the model back from disk
+```
+
+Where, of course, you'd want to change around the vocabulary size depending on the size of your dataset.
+
+**Special tokens**. Finally, you might wish to add special tokens to your tokenizer. Register these using the `register_special_tokens` function. For example if you train with vocab_size of 32768, then the first 256 tokens are raw byte tokens, the next 32768-256 are merge tokens, and after those you can add the special tokens. The last "real" merge token will have id of 32767 (vocab_size - 1), so your first special token should come right after that, with an id of exactly 32768. So:
+
+```python
+from minbpe import RegexTokenizer
+tokenizer = RegexTokenizer()
+tokenizer.train(very_long_training_string, vocab_size=32768)
+tokenizer.register_special_tokens({"<|endoftext|>": 32768})
+tokenizer.encode("<|endoftext|>hello world")
+```
+
+You can of course add more tokens after that as well, as you like. Finally, I'd like to stress that I tried hard to keep the code itself clean, readable and hackable. You should not have feel scared to read the code and understand how it works. The tests are also a nice place to look for more usage examples. That reminds me:
 
 ## tests
 
@@ -64,7 +112,7 @@ to run the tests. (-v is verbose, slightly prettier).
 
 - write a more optimized Python version that could run over large files and big vocabs
 - write an even more optimized C or Rust version (think through)
-- rename GPT4Tokenizer to GPTTokenizer and support GPT-2 as well?
+- rename GPT4Tokenizer to GPTTokenizer and support GPT-2/GPT-3/GPT-3.5 as well?
 - write a LlamaTokenizer similar to GPT4Tokenizer (i.e. attempt sentencepiece equivalent)
 - video coming soon ;)
 

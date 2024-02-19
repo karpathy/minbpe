@@ -21,7 +21,7 @@ GPT4_SPLIT_PATTERN = r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1
 
 class RegexTokenizer(Tokenizer):
 
-    def __init__(self, pattern=None, special_tokens=None):
+    def __init__(self, pattern=None):
         """
         - pattern: optional string to override the default (GPT-4 split pattern)
         - special_tokens: str -> int dictionary of special tokens
@@ -29,9 +29,9 @@ class RegexTokenizer(Tokenizer):
         """
         super().__init__()
         self.pattern = GPT4_SPLIT_PATTERN if pattern is None else pattern
-        self.special_tokens = {} if special_tokens is None else special_tokens
         self.compiled_pattern = re.compile(self.pattern)
-        self.inverse_special_tokens = {v: k for k, v in self.special_tokens.items()}
+        self.special_tokens = {}
+        self.inverse_special_tokens = {}
 
     def train(self, text, vocab_size, verbose=False):
         assert vocab_size >= 256
@@ -68,6 +68,12 @@ class RegexTokenizer(Tokenizer):
         # save class variables
         self.merges = merges # used in encode()
         self.vocab = vocab   # used in decode()
+
+    def register_special_tokens(self, special_tokens):
+        # special_tokens is a dictionary of str -> int
+        # example: {"<|endoftext|>": 100257}
+        self.special_tokens = special_tokens
+        self.inverse_special_tokens = {v: k for k, v in special_tokens.items()}
 
     def decode(self, ids):
         # given ids (list of integers), return Python string

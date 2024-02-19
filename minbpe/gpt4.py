@@ -57,7 +57,7 @@ class GPT4Tokenizer(RegexTokenizer):
     """Lightweight wrapper on RegexTokenizer that matches GPT-4's tokenizer."""
 
     def __init__(self):
-        super().__init__(pattern=GPT4_SPLIT_PATTERN, special_tokens=GPT4_SPECIAL_TOKENS)
+        super().__init__(pattern=GPT4_SPLIT_PATTERN)
         # get the official tokenizer and its merges
         enc = tiktoken.get_encoding("cl100k_base")
         mergeable_ranks = enc._mergeable_ranks
@@ -74,6 +74,8 @@ class GPT4Tokenizer(RegexTokenizer):
         # and probably historical, but therefore we have to deal with it here.
         self.byte_shuffle = {i: mergeable_ranks[bytes([i])] for i in range(256)}
         self.inverse_byte_shuffle = {v: k for k, v in self.byte_shuffle.items()}
+        # finally register the special tokens
+        self.register_special_tokens(GPT4_SPECIAL_TOKENS)
 
     def _encode_chunk(self, text_bytes):
         # before we start processing bytes, we have to permute them

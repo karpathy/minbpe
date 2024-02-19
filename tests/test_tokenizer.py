@@ -111,8 +111,9 @@ def test_save_load(special_tokens):
     # take a bit more complex piece of text and train the tokenizer, chosen at random
     text = llama_text
     # create a Tokenizer and do 64 merges
-    tokenizer = RegexTokenizer(special_tokens=special_tokens)
+    tokenizer = RegexTokenizer()
     tokenizer.train(text, 256 + 64)
+    tokenizer.register_special_tokens(special_tokens)
     # verify that decode(encode(x)) == x
     assert tokenizer.decode(tokenizer.encode(text)) == text
     # verify that save/load work as expected
