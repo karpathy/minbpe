@@ -31,6 +31,7 @@ def recover_merges(mergeable_ranks):
     # so we have to recover the original pairings. We can do this by doing
     # a small BPE training run on all the tokens, in their order.
     # also see https://github.com/openai/tiktoken/issues/60
+    # also see https://github.com/karpathy/minbpe/issues/11#issuecomment-1950805306
     merges = {}
     for token, rank in mergeable_ranks.items():
         if len(token) == 1:
