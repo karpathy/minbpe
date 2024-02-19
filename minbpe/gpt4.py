@@ -105,3 +105,26 @@ class GPT4Tokenizer(RegexTokenizer):
 
     def load(self, model_file):
         raise NotImplementedError("GPT4Tokenizer cannot be loaded.")
+
+    def save_vocab(self, vocab_file):
+        # just for visualization purposes let's output the GPT-4 tokens
+        # in the exact same format as the base class would.
+        # simple run as:
+        # python -c "from minbpe import GPT4Tokenizer; GPT4Tokenizer().save_vocab('gpt4.vocab')"
+        from .base import render_token
+        # build vocab being mindful of the byte shuffle
+        vocab = {idx: bytes([self.inverse_byte_shuffle[idx]]) for idx in range(256)}
+        for (p0, p1), idx in self.merges.items():
+            vocab[idx] = vocab[p0] + vocab[p1]
+        # now merge the shuffled bytes and write to file
+        inverted_merges = {idx: pair for pair, idx in self.merges.items()}
+        with open(vocab_file, "w", encoding="utf-8") as f:
+            for idx, token in vocab.items():
+                s = render_token(token)
+                if idx in inverted_merges:
+                    idx0, idx1 = inverted_merges[idx]
+                    s0 = render_token(vocab[idx0])
+                    s1 = render_token(vocab[idx1])
+                    f.write(f"[{s0}][{s1}] -> [{s}] {idx}\n")
+                else:
+                    f.write(f"[{s}] {idx}\n")
