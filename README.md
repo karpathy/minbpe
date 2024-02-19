@@ -54,7 +54,25 @@ print(tokenizer.encode(text))
 # [15339, 4513, 12340, 30, 320, 31495, 230, 75265, 243, 92245, 16715, 57037]
 ```
 
-(you'll have to `pip install tiktoken` to run). Under the hood, the `GPT4Tokenizer` is just a light wrapper around `RegexTokenizer`, passing in the merges and the special tokens of GPT-4.
+(you'll have to `pip install tiktoken` to run). Under the hood, the `GPT4Tokenizer` is just a light wrapper around `RegexTokenizer`, passing in the merges and the special tokens of GPT-4. We can also ensure the special tokens are handled correctly:
+
+```python
+text = "<|endoftext|>hello world"
+
+# tiktoken
+import tiktoken
+enc = tiktoken.get_encoding("cl100k_base")
+print(enc.encode(text, allowed_special="all"))
+# [100257, 15339, 1917]
+
+# ours
+from minbpe import GPT4Tokenizer
+tokenizer = GPT4Tokenizer()
+print(tokenizer.encode(text, allowed_special="all"))
+# [100257, 15339, 1917]
+```
+
+Note that just like tiktoken, we have to explicitly declare our intent to use and parse special tokens in the call to encode. Otherwise this can become a major footgun, unintentionally tokenizing attacker-controlled data (e.g. user prompts) with special tokens. The `allowed_special` parameter can be set to "all", "none", or a list of special tokens to allow.
 
 ## training
 
@@ -93,7 +111,7 @@ from minbpe import RegexTokenizer
 tokenizer = RegexTokenizer()
 tokenizer.train(very_long_training_string, vocab_size=32768)
 tokenizer.register_special_tokens({"<|endoftext|>": 32768})
-tokenizer.encode("<|endoftext|>hello world")
+tokenizer.encode("<|endoftext|>hello world", allowed_special="all")
 ```
 
 You can of course add more tokens after that as well, as you like. Finally, I'd like to stress that I tried hard to keep the code itself clean, readable and hackable. You should not have feel scared to read the code and understand how it works. The tests are also a nice place to look for more usage examples. That reminds me:
