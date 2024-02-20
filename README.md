@@ -10,6 +10,7 @@ There are two Tokenizers in this repository, both of which can perform the 3 pri
 2. [minbpe/basic.py](minbpe/basic.py): Implements the `BasicTokenizer`, the simplest implementation of the BPE algorithm that runs directly on text.
 3. [minbpe/regex.py](minbpe/regex.py): Implements the `RegexTokenizer` that further splits the input text by a regex pattern, which is a preprocessing stage that splits up the input text by categories (think: letters, numbers, punctuation) before tokenization. This ensures that no merges will happen across category boundaries. This was introduced in the GPT-2 paper and continues to be in use as of GPT-4. This class also handles special tokens, if any.
 4. [minbpe/gpt4.py](minbpe/gpt4.py): Implements the `GPT4Tokenizer`. This class is a light wrapper around the `RegexTokenizer` (2, above) that exactly reproduces the tokenization of GPT-4 in the [tiktoken](https://github.com/openai/tiktoken) library. The wrapping handles some details around recovering the exact merges in the tokenizer, and the handling of some unfortunate (and likely historical?) 1-byte token permutations.
+5. [llama/llama.py](llama/llama.py): Introduces the `LlamaTokenizer`, which serves as a lightweight wrapper around SentencePiece for tokenization tasks within the Llama framework. This class is designed as a pretrained tokenizer and is capable of replicating the behavior of SentencePiece. By default, the tokenizer loads a pretrained model from a specified source during initialization. It offers methods for encoding text into token IDs and decoding token IDs back into text using SentencePiece functionalities.
 
 Finally, the script [train.py](train.py) trains the two major tokenizers on the input text [tests/taylorswift.txt](tests/taylorswift.txt) (this is the Wikipedia entry for her kek) and saves the vocab to disk for visualization. This script runs in about 25 seconds on my (M1) MacBook.
 
@@ -136,6 +137,12 @@ For those trying to study BPE, here is the advised progression exercise for how 
 - write an even more optimized C or Rust version (think through)
 - rename GPT4Tokenizer to GPTTokenizer and support GPT-2/GPT-3/GPT-3.5 as well?
 - write a LlamaTokenizer similar to GPT4Tokenizer (i.e. attempt sentencepiece equivalent)
+- The `LlamaTokenizer` aims to replicate the behavior of SentencePiece for tokenization tasks.
+  - Features:
+    - Utilizes the SentencePiece library for tokenization.
+    - Provides methods for encoding text into token IDs and decoding token IDs into text.
+    - Designed to handle tokenization tasks similar to SentencePiece.
+    - Inherits from the RegexTokenizer for preprocessing text with regex patterns.
 - video coming soon ;)
 
 ## License
