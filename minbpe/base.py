@@ -5,8 +5,7 @@ It would be possible to be a lot more strict about the interface and
 e.g. isolating all regex/pattern parts to the RegexTokenizer, but
 some concessions are made for simplicity.
 """
-from concurrent.futures import ThreadPoolExecutor
-import functools
+
 import unicodedata
 
 # -----------------------------------------------------------------------------
@@ -82,26 +81,18 @@ class Tokenizer:
     def encode(self, text):
         # Tokenizer can encode a string into a list of integers
         raise NotImplementedError
-    
-    def encode_batch(self, text, num_threads=8):
-        # encoding a batch of text
-        # e.g. tokenizer.encode_batch(['aaabdaaabaa', 'aaabdaaab'])
-        # result: [[258, 100, 258, 256], [258, 100, 258]]
-        encoder = functools.partial(self.encode)
-        with ThreadPoolExecutor(num_threads) as e:
-            return list(e.map(encoder, text))
+
+    def encode_batch(self, text, **kwargs):
+        # Tokenizer can encode a batch of strings into a batch of integers lists
+        raise NotImplementedError
 
     def decode(self, ids):
         # Tokenizer can decode a list of integers into a string
         raise NotImplementedError
-    
-    def decode_batch(self, ids, num_threads=8):
-        # decoding a batch of ids
-        # e.g. tokenizer.decode_batch([[258, 100, 258, 256], [258, 100, 258]])
-        # result: ['aaabdaaabaa', 'aaabdaaab']
-        decoder = functools.partial(self.decode)
-        with ThreadPoolExecutor(num_threads) as e:
-            return list(e.map(decoder, ids))
+
+    def decode_batch(self, ids, **kwargs):
+        # Tokenizer can decode a batch of integer lists into a list of strings
+        raise NotImplementedError
 
     def _build_vocab(self):
         # vocab is simply and deterministically derived from merges

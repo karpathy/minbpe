@@ -9,6 +9,8 @@ But:
 - Does not handle any special tokens.
 """
 
+from concurrent.futures import ThreadPoolExecutor
+import functools
 from .base import Tokenizer, get_stats, merge
 
 
@@ -53,6 +55,14 @@ class BasicTokenizer(Tokenizer):
         text_bytes = b"".join(self.vocab[idx] for idx in ids)
         text = text_bytes.decode("utf-8", errors="replace")
         return text
+    
+    def decode_batch(self, ids, num_threads=8):
+        # decoding a batch of ids
+        # e.g. tokenizer.decode_batch([[258, 100, 258, 256], [258, 100, 258]])
+        # result: ['aaabdaaabaa', 'aaabdaaab']
+        decoder = functools.partial(self.decode)
+        with ThreadPoolExecutor(num_threads) as e:
+            return list(e.map(decoder, ids))
 
     def encode(self, text):
         # given a string text, return the token ids
@@ -72,3 +82,11 @@ class BasicTokenizer(Tokenizer):
             idx = self.merges[pair]
             ids = merge(ids, pair, idx)
         return ids
+    
+    def encode_batch(self, text, num_threads=8):
+        # encoding a batch of text
+        # e.g. tokenizer.encode_batch(['aaabdaaabaa', 'aaabdaaab'])
+        # result: [[258, 100, 258, 256], [258, 100, 258]]
+        encoder = functools.partial(self.encode)
+        with ThreadPoolExecutor(num_threads) as e:
+            return list(e.map(encoder, text))
