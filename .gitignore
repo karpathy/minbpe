@@ -1,3 +1,6 @@
 __pycache__/
 .DS_Store
 models/**/*
+*.pytest_cache
+*.model
+*.vocab
