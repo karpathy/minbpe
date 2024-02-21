@@ -7,9 +7,11 @@ some concessions are made for simplicity.
 """
 import unicodedata
 from collections import Counter
+from itertools import pairwise
 
 # -----------------------------------------------------------------------------
 # a few helper functions useful for both BasicTokenizer and RegexTokenizer
+
 
 def get_stats(ids, counts=None) -> Counter:
     """
@@ -18,9 +20,9 @@ def get_stats(ids, counts=None) -> Counter:
     Optionally allows to update an existing dictionary of counts
     """
     if counts is None:
-        return Counter(zip(ids, ids[1:]))
+        return Counter(pairwise(ids))
 
-    counts.update(zip(ids, ids[1:]))
+    counts.update(pairwise(ids))
 
 
 def merge(ids, pair, idx):
