@@ -5,7 +5,6 @@ It would be possible to be a lot more strict about the interface and
 e.g. isolating all regex/pattern parts to the RegexTokenizer, but
 some concessions are made for simplicity.
 """
-import unicodedata
 
 # -----------------------------------------------------------------------------
 # a few helper functions useful for both BasicTokenizer and RegexTokenizer
@@ -48,7 +47,7 @@ def replace_control_characters(s: str) -> str:
     # http://www.unicode.org/reports/tr44/#GC_Values_Table
     chars = []
     for ch in s:
-        if unicodedata.category(ch)[0] != "C":
+        if ch.isprintable():
             chars.append(ch) # this character is ok
         else:
             chars.append(f"\\u{ord(ch):04x}") # escape
