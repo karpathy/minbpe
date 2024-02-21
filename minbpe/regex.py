@@ -52,7 +52,7 @@ class RegexTokenizer(Tokenizer):
             stats = Counter()
             for chunk_ids in ids:
                 # passing in stats will update it in place, adding up counts
-                stats = get_stats(chunk_ids, stats)
+                get_stats(chunk_ids, stats)
             # find the pair with the highest count
             pair = stats.most_common(1)[0][0]
             # mint a new token: assign it the next available id

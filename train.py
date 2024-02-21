@@ -13,7 +13,6 @@ text = open("tests/taylorswift.txt", "r", encoding="utf-8").read()
 # create a directory for models, so we don't pollute the current directory
 os.makedirs("models", exist_ok=True)
 
-t0 = time.time()
 for TokenizerClass, name in zip([BasicTokenizer, RegexTokenizer], ["basic", "regex"]):
     # construct the Tokenizer object and kick off verbose training
     t0 = time.perf_counter()
@@ -24,5 +23,5 @@ for TokenizerClass, name in zip([BasicTokenizer, RegexTokenizer], ["basic", "reg
     tokenizer.save(prefix)
     t1 = time.perf_counter()
     print(f"Training {name} tokenizer took {t1 - t0:.2f} seconds")
-
-print(f"Training took {t1 - t0:.2f} seconds")
+    # > Training basic tokenizer took 3.56 seconds
+    # > Training regex tokenizer took 9.14 seconds
