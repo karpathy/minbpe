@@ -130,13 +130,16 @@ to run the tests. (-v is verbose, slightly prettier).
 
 For those trying to study BPE, here is the advised progression exercise for how you can build your own minbpe step by step. See [exercise.md](exercise.md).
 
+## video
+
+[Let's build the GPT Tokenizer](https://www.youtube.com/watch?v=zduSFxRajkE)
+
 ## todos
 
 - write a more optimized Python version that could run over large files and big vocabs
 - write an even more optimized C or Rust version (think through)
 - rename GPT4Tokenizer to GPTTokenizer and support GPT-2/GPT-3/GPT-3.5 as well?
 - write a LlamaTokenizer similar to GPT4Tokenizer (i.e. attempt sentencepiece equivalent)
-- video coming soon ;)
 
 ## License
 
