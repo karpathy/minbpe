@@ -43,7 +43,7 @@ def merge(ids, pair, idx):
 def replace_control_characters(s: str) -> str:
     # we don't want to print control characters
     # which distort the output (e.g. \n or much worse)
-    # https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python/19016117#19016117
+    # https://stackoverflow.com/a/78031057/10693596
     # http://www.unicode.org/reports/tr44/#GC_Values_Table
     chars = []
     for ch in s:
