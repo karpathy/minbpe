@@ -4,9 +4,11 @@ Note that this is a pretrained tokenizer. By default and inside init(), it
 loads the pretrained tokenizer from the `cl100k_base` tokenizer of tiktoken.
 """
 
-import tiktoken
-from .regex import RegexTokenizer
+from itertools import pairwise
 
+import tiktoken
+
+from .regex import RegexTokenizer
 
 def bpe(mergeable_ranks, token, max_rank):
     # helper function used in get_gpt4_merges() to reconstruct the merge forest
@@ -14,7 +16,7 @@ def bpe(mergeable_ranks, token, max_rank):
     while True:
         min_idx = None
         min_rank = None
-        for i, pair in enumerate(zip(parts[:-1], parts[1:])):
+        for i, pair in enumerate(pairwise(parts)):
             rank = mergeable_ranks.get(pair[0] + pair[1])
             if rank is not None and (min_rank is None or rank < min_rank):
                 min_idx = i
