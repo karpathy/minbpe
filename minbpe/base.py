@@ -17,10 +17,10 @@ def get_stats(ids, counts=None) -> Counter:
     Example: [1, 2, 3, 1, 2] -> {(1, 2): 2, (2, 3): 1, (3, 1): 1}
     Optionally allows to update an existing dictionary of counts
     """
-    counts = counts if counts is not None else Counter()
-    for pair in zip(ids, ids[1:]):  # iterate consecutive elements
-        counts.update({pair: 1})
-    return counts
+    c = Counter(zip(ids, ids[1:]))
+    if counts is not None:
+        c.update(counts)
+    return c
 
 
 def merge(ids, pair, idx):

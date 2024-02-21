@@ -15,13 +15,14 @@ os.makedirs("models", exist_ok=True)
 
 t0 = time.time()
 for TokenizerClass, name in zip([BasicTokenizer, RegexTokenizer], ["basic", "regex"]):
-
     # construct the Tokenizer object and kick off verbose training
+    t0 = time.perf_counter()
     tokenizer = TokenizerClass()
     tokenizer.train(text, 512, verbose=True)
     # writes two files in the models directory: name.model, and name.vocab
     prefix = os.path.join("models", name)
     tokenizer.save(prefix)
-t1 = time.time()
+    t1 = time.perf_counter()
+    print(f"Training {name} tokenizer took {t1 - t0:.2f} seconds")
 
 print(f"Training took {t1 - t0:.2f} seconds")
