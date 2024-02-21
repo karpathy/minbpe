@@ -28,17 +28,36 @@ def merge(ids, pair, idx):
     of pair with the new integer token idx
     Example: ids=[1, 2, 3, 1, 2], pair=(1, 2), idx=4 -> [4, 3, 4]
     """
-    newids = []
+    new_ids = [*ids]
+    return merge_inplace(new_ids, pair, idx)
+
+
+def merge_inplace(ids, pair, idx):
+    """
+    In the list of integers (ids), replace all consecutive occurrences
+    of pair with the new integer token idx.
+    This function modifies the ids array in-place.
+    Example: ids=[1, 2, 3, 1, 2], pair=(1, 2), idx=4 -> ids=[4, 3, 4]
+    """
+    p0, p1 = pair
+    increment = 2 if p0 != p1 else 1  # used when p1 matches, but p0 doesn't
+
     i = 0
-    while i < len(ids):
-        # if not at the very last position AND the pair matches, replace it
-        if ids[i] == pair[0] and i < len(ids) - 1 and ids[i+1] == pair[1]:
-            newids.append(idx)
-            i += 2
-        else:
-            newids.append(ids[i])
-            i += 1
-    return newids
+    while i < len(ids) - 1:
+        # check if the pair matches at this position
+        next_ch = ids[i + 1]
+        if next_ch != p1:
+            i += 2 if next_ch != p0 else 1
+            continue
+
+        if ids[i] != p0:
+            i += increment
+            continue
+
+        # replace pair with new token in-place
+        ids[i] = idx
+        ids.pop(i + 1)
+    return ids
 
 # first two helper functions...
 def replace_control_characters(s: str) -> str:
