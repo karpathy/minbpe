@@ -61,7 +61,7 @@ class BasicTokenizer(Tokenizer):
         while len(ids) >= 2:
             # find the pair with the lowest merge index
             stats = get_stats(ids)
-            pair = min(stats, key=lambda p: self.merges.get(p, float("inf")))
+            pair = stats.most_common()[:-2:-1]  # get the last element
             # subtle: if there are no more merges available, the key will
             # result in an inf for every single pair, and the min will be
             # just the first pair in the list, arbitrarily

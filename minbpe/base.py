@@ -10,15 +10,15 @@ import unicodedata
 # -----------------------------------------------------------------------------
 # a few helper functions useful for both BasicTokenizer and RegexTokenizer
 
-def get_stats(ids, counts=None):
+def get_stats(ids, counts=None) -> Counter:
     """
     Given a list of integers, return a dictionary of counts of consecutive pairs
     Example: [1, 2, 3, 1, 2] -> {(1, 2): 2, (2, 3): 1, (3, 1): 1}
     Optionally allows to update an existing dictionary of counts
     """
-    counts = {} if counts is None else counts
-    for pair in zip(ids, ids[1:]): # iterate consecutive elements
-        counts[pair] = counts.get(pair, 0) + 1
+    counts = counts if counts is not None else Counter()
+    for pair in zip(ids, ids[1:]):  # iterate consecutive elements
+        counts.update({pair: 1})
     return counts
 
 
