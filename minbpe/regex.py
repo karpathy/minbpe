@@ -10,6 +10,7 @@ Unlike BasicTokenizer:
 """
 
 import regex as re
+from collections import Counter
 from .base import Tokenizer, get_stats, merge
 
 
@@ -48,12 +49,12 @@ class RegexTokenizer(Tokenizer):
         vocab = {idx: bytes([idx]) for idx in range(256)} # idx -> bytes
         for i in range(num_merges):
             # count the number of times every consecutive pair appears
-            stats = {}
+            stats = Counter()
             for chunk_ids in ids:
                 # passing in stats will update it in place, adding up counts
-                get_stats(chunk_ids, stats)
+                stats = get_stats(chunk_ids, stats)
             # find the pair with the highest count
-            pair = max(stats, key=stats.get)
+            pair = stats.most_common(1)[0][0]
             # mint a new token: assign it the next available id
             idx = 256 + i
             # replace all occurrences of pair in ids with idx
@@ -96,7 +97,7 @@ class RegexTokenizer(Tokenizer):
         while len(ids) >= 2:
             # find the pair with the lowest merge index
             stats = get_stats(ids)
-            pair = min(stats, key=lambda p: self.merges.get(p, float("inf")))
+            pair = stats.most_common()[:-2:-1]  # get the last element
             # subtle: if there are no more merges available, the key will
             # result in an inf for every single pair, and the min will be
             # just the first pair in the list, arbitrarily
