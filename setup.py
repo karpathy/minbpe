@@ -10,5 +10,6 @@ setup(
     author='Andrej Karpathy',
     author_email='andrej.karpathy@gmail.com',
     packages=["minbpe"],
-    install_requires=requires
+    install_requires=requires,
+    python_requires='>=3.10' # I have tested it works for 3.10. Didn't test yet for other versions.
 )
