@@ -5,7 +5,7 @@ The whole thing runs in ~25 seconds on my laptop.
 
 import os
 import time
-from minbpe import OptimizedTokenizer
+from minbpe import BasicTokenizer
 
 # open some text and train a vocab of 512 tokens
 text = open("tests/taylorswift.txt", "r", encoding="utf-8").read()
@@ -16,8 +16,8 @@ os.makedirs("models", exist_ok=True)
 t0 = time.time()
 
 # construct the Tokenizer object and kick off verbose training
-tokenizer = OptimizedTokenizer()
-tokenizer.train(text, 512, verbose=True)
+tokenizer = BasicTokenizer()
+tokenizer.train_gpu(text, 512, verbose=True)
 # writes two files in the models directory: name.model, and name.vocab
 prefix = os.path.join("models", "basic")
 tokenizer.save(prefix)

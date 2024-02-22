@@ -9,6 +9,7 @@ But:
 - Does not handle any special tokens.
 """
 
+import torch
 from .base import Tokenizer, get_stats, merge
 
 
@@ -47,6 +48,42 @@ class BasicTokenizer(Tokenizer):
         # save class variables
         self.merges = merges # used in encode()
         self.vocab = vocab   # used in decode()
+
+    def train_gpu(self, text: str, vocab_size: int, verbose=False):
+        assert vocab_size >= 256
+        num_merges = vocab_size - 256
+        text_bytes = text.encode("utf-8") # raw bytes
+        ids = list(text_bytes) # list of integers in range 0..255
+
+        ids = torch.tensor(ids, dtype=torch.int64).cuda()
+        merge_pairs = torch.zeros((num_merges, 2), dtype=torch.int64).cuda()
+
+        for i in range(num_merges):
+            pairs = torch.stack((ids[:-1], ids[1:]), dim=1)
+            unique, counts = torch.unique(pairs, return_counts=True, dim=0)
+            pair_index = torch.argmax(counts)
+            pair = unique[pair_index]
+            count = counts[pair_index]
+
+            mask = torch.all(pairs == pair, dim=1)
+            mask = torch.cat((mask, torch.tensor([False]).cuda()))
+            ids[mask] = i + 256
+            ids = ids[~torch.roll(mask, 1, 0)]
+
+            merge_pairs[i] = pair
+
+        self.merges = {
+            tuple(pair.tolist()): j + 256
+            for j, pair in enumerate(merge_pairs)
+        }
+
+        vocab = {idx: bytes([idx]) for idx in range(256)} # int -> bytes
+        for i in range(num_merges):
+            pair = merge_pairs[i]
+            vocab[i + 256] = vocab[pair[0].item()] + vocab[pair[1].item()]
+            if verbose:
+                print(f"merge {i+1}/{num_merges}: {pair} -> {i + 256} ({vocab[i + 256]}) had {count} occurrences")
+        self.vocab = vocab
 
     def decode(self, ids):
         # given ids (list of integers), return Python string
