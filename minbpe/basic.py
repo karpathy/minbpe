@@ -67,9 +67,13 @@ class BasicTokenizer(Tokenizer):
             pair = unique[pair_index]
             count = counts[pair_index]
 
+            # create a mask for the pair
             mask = torch.all(pairs == pair, dim=1)
+            # append a False to the mask to make it the same length as ids
             mask = torch.cat((mask, torch.tensor([False]).cuda()))
+            # change the first element of every occurrence of the pair to the new id
             ids[mask] = i + 256
+            # remove the second element of every occurrence of the pair
             ids = ids[~torch.roll(mask, 1, 0)]
 
             merge_pairs[i] = pair
@@ -81,12 +85,11 @@ class BasicTokenizer(Tokenizer):
 
         vocab = {idx: bytes([idx]) for idx in range(256)} # int -> bytes
         for i in range(num_merges):
-            pair = merge_pairs[i]
+            pair = tuple(merge_pairs[i].tolist())
             idx = 256 + i
-            pair_tuple = tuple(pair.tolist())
-            vocab[idx] = vocab[pair_tuple[0]] + vocab[pair_tuple[1]]
+            vocab[idx] = vocab[pair[0]] + vocab[pair[1]]
             if verbose:
-                print(f"merge {i+1}/{num_merges}: {pair_tuple} -> {idx} ({vocab[idx]}) had {count} occurrences")
+                print(f"merge {i+1}/{num_merges}: {pair} -> {idx} ({vocab[idx]}) had {count} occurrences")
         self.vocab = vocab
 
     def decode(self, ids):
