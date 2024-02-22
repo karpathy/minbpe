@@ -36,7 +36,7 @@ class OptimizedTokenizer(Tokenizer):
             count = counts[pair_index]
 
             mask = torch.all(pairs == pair, dim=1)
-            mask = torch.cat((mask, torch.tensor([False])))
+            mask = torch.cat((mask, torch.tensor([False]).cuda()))
             ids[mask] = i + 256
             ids = ids[~torch.roll(mask, 1, 0)]
 
