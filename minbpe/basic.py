@@ -89,7 +89,7 @@ class BasicTokenizer(Tokenizer):
             idx = 256 + i
             vocab[idx] = vocab[pair[0]] + vocab[pair[1]]
             if verbose:
-                print(f"merge {i+1}/{num_merges}: {pair} -> {idx} ({vocab[idx]}) had {count} occurrences")
+                print(f"merge {i+1}/{num_merges}: {pair} -> {idx} ({vocab[idx]})")
         self.vocab = vocab
 
     def decode(self, ids):
