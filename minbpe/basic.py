@@ -52,6 +52,8 @@ class BasicTokenizer(Tokenizer):
     def train_gpu(self, text: str, vocab_size: int, verbose=False):
         assert vocab_size >= 256
         num_merges = vocab_size - 256
+
+        # input text preprocessing
         text_bytes = text.encode("utf-8") # raw bytes
         ids = list(text_bytes) # list of integers in range 0..255
 
@@ -80,9 +82,10 @@ class BasicTokenizer(Tokenizer):
         vocab = {idx: bytes([idx]) for idx in range(256)} # int -> bytes
         for i in range(num_merges):
             pair = merge_pairs[i]
-            vocab[i + 256] = vocab[pair[0].item()] + vocab[pair[1].item()]
+            idx = 256 + i
+            vocab[idx] = vocab[pair[0].item()] + vocab[pair[1].item()]
             if verbose:
-                print(f"merge {i+1}/{num_merges}: {pair} -> {i + 256} ({vocab[i + 256]}) had {count} occurrences")
+                print(f"merge {i+1}/{num_merges}: {pair} -> {idx} ({vocab[idx]}) had {count} occurrences")
         self.vocab = vocab
 
     def decode(self, ids):
