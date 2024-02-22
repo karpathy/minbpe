@@ -25,8 +25,8 @@ class OptimizedTokenizer(Tokenizer):
         text_bytes = text.encode("utf-8") # raw bytes
         ids = list(text_bytes) # list of integers in range 0..255
 
-        ids = torch.tensor(ids, dtype=torch.int64, device="cpu")
-        merge_pairs = torch.zeros((num_merges, 2), dtype=torch.int64)
+        ids = torch.tensor(ids, dtype=torch.int64).cuda()
+        merge_pairs = torch.zeros((num_merges, 2), dtype=torch.int64).cuda()
 
         for i in range(num_merges):
             pairs = torch.stack((ids[:-1], ids[1:]), dim=1)
