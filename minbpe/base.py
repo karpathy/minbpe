@@ -10,6 +10,7 @@ import unicodedata
 # -----------------------------------------------------------------------------
 # a few helper functions useful for both BasicTokenizer and RegexTokenizer
 
+
 def get_stats(ids, counts=None):
     """
     Given a list of integers, return a dictionary of counts of consecutive pairs
@@ -17,7 +18,7 @@ def get_stats(ids, counts=None):
     Optionally allows to update an existing dictionary of counts
     """
     counts = {} if counts is None else counts
-    for pair in zip(ids, ids[1:]): # iterate consecutive elements
+    for pair in zip(ids, ids[1:]):  # iterate consecutive elements
         counts[pair] = counts.get(pair, 0) + 1
     return counts
 
@@ -28,17 +29,18 @@ def merge(ids, pair, idx):
     of pair with the new integer token idx
     Example: ids=[1, 2, 3, 1, 2], pair=(1, 2), idx=4 -> [4, 3, 4]
     """
-    newids = []
+    new_ids = []
     i = 0
     while i < len(ids):
         # if not at the very last position AND the pair matches, replace it
-        if ids[i] == pair[0] and i < len(ids) - 1 and ids[i+1] == pair[1]:
-            newids.append(idx)
+        if ids[i] == pair[0] and i < len(ids) - 1 and ids[i + 1] == pair[1]:
+            new_ids.append(idx)
             i += 2
         else:
-            newids.append(ids[i])
+            new_ids.append(ids[i])
             i += 1
-    return newids
+    return new_ids
+
 
 # first two helper functions...
 def replace_control_characters(s: str) -> str:
@@ -49,29 +51,32 @@ def replace_control_characters(s: str) -> str:
     chars = []
     for ch in s:
         if unicodedata.category(ch)[0] != "C":
-            chars.append(ch) # this character is ok
+            chars.append(ch)  # this character is ok
         else:
-            chars.append(f"\\u{ord(ch):04x}") # escape
+            chars.append(f"\\u{ord(ch):04x}")  # escape
     return "".join(chars)
+
 
 def render_token(t: bytes) -> str:
     # pretty print a token, escaping control characters
-    s = t.decode('utf-8', errors='replace')
+    s = t.decode("utf-8", errors="replace")
     s = replace_control_characters(s)
     return s
 
+
 # -----------------------------------------------------------------------------
 # the base Tokenizer class
+
 
 class Tokenizer:
     """Base class for Tokenizers"""
 
     def __init__(self):
         # default: vocab size of 256 (all bytes), no merges, no patterns
-        self.merges = {} # (int, int) -> int
-        self.pattern = "" # str
-        self.special_tokens = {} # str -> int, e.g. {'<|endoftext|>': 100257}
-        self.vocab = self._build_vocab() # int -> bytes
+        self.merges = {}  # (int, int) -> int
+        self.pattern = ""  # str
+        self.special_tokens = {}  # str -> int, e.g. {'<|endoftext|>': 100257}
+        self.vocab = self._build_vocab()  # int -> bytes
 
     def train(self, text, vocab_size, verbose=False):
         # Tokenizer can train a vocabulary of size vocab_size from text
@@ -103,7 +108,7 @@ class Tokenizer:
         """
         # write the model: to be used in load() later
         model_file = file_prefix + ".model"
-        with open(model_file, 'w') as f:
+        with open(model_file, "w") as f:
             # write the version, pattern and merges, that's all that's needed
             f.write("minbpe v1\n")
             f.write(f"{self.pattern}\n")
@@ -144,7 +149,7 @@ class Tokenizer:
         merges = {}
         special_tokens = {}
         idx = 256
-        with open(model_file, 'r', encoding="utf-8") as f:
+        with open(model_file, "r", encoding="utf-8") as f:
             # read the version
             version = f.readline().strip()
             assert version == "minbpe v1"

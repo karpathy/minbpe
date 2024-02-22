@@ -1,5 +1,6 @@
 __pycache__/
 .DS_Store
+.venv/
 models/**/*
 *.pytest_cache
 *.model

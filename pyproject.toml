@@ -1,0 +1,16 @@
+[project]
+name = "minbpe"
+version = "0.1.0"
+description = "Minimal, clean code for the Byte Pair Encoding (BPE) algorithm"
+authors = [{ name = "Andrej" }]
+dependencies = ["regex==2023.12.25", "tiktoken==0.6.0"]
+requires-python = ">=3.10"
+readme = "README.md"
+license = { text = "MIT" }
+
+
+[tool.pdm]
+distribution = false
+
+[tool.pdm.dev-dependencies]
+dev = ["ruff>=0.2.2", "pytest>=8.0.1"]
