@@ -130,9 +130,9 @@ to run the tests. (-v is verbose, slightly prettier).
 
 For those trying to study BPE, here is the advised progression exercise for how you can build your own minbpe step by step. See [exercise.md](exercise.md).
 
-## video
+## lecture
 
-[Let's build the GPT Tokenizer](https://www.youtube.com/watch?v=zduSFxRajkE)
+I built the code in this repository in this [YouTube video](https://www.youtube.com/watch?v=zduSFxRajkE). You can also find this lecture in text form in [lecture.md](lecture.md).
 
 ## todos
 
