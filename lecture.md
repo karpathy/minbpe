@@ -103,5 +103,43 @@ So for example, the string "Tokenization" encoded into the tokens 30642 followed
 
 Next, we have a simple example of some arithmetic. Here, we see that numbers may be inconsistently decomposed by the tokenizer. For example, the number 127 is a single token of three characters, but the number 677 because two tokens: the token " 6" (again, note the space in the front!) and the token "77". We rely on the large language model to make sense of this arbitrariness. It has to learn inside its parameters and during training that these two tokens (" 6" and "77" actually combine to create the number 677). In the same way, we see that if the LLM wanted to predict that the result of this sum is the number 804, it would have to output that in two time steps: first it has to emit the token " 8", and then the token "04". Note that all of these splits look completely arbitrary. In the example right below, we see that 1275 is "12" followed by "75", 6773 is actually three tokens " 6", "77", "3", and 8041 is " 8", "041".
 
-(to be continued...)
-(TODO: may continue this unless we figure out how to generate it automatically from the video :))
+### Tokenization by position, case, and language (08:15)
+
+Tokenization in language models is not a one-size-fits-all process. It can vary significantly based on position within a sentence, case sensitivity, and the language being processed. For example, the English word "egg" can be tokenized differently depending on its position in a sentence or its case:
+
+```plaintext
+"egg" -> two tokens
+"I have an egg" -> " egg" as a single token
+"EGG" -> different tokens compared to "egg"
+```
+
+This variability means that the language model must learn from the vast amounts of text data it's trained on that these different tokens actually represent the same concept. This is no small feat and can lead to inefficiencies in training and performance.
+
+Moreover, non-English languages often get the short end of the stick. For instance, a sentence in Korean or Japanese might use more tokens than its English translation, leading to longer token sequences and potentially bloated document lengths. This can be problematic because it stretches out the text from the transformer's perspective, making it harder for the model to maintain context and understand the text.
+
+### Efficiency Improvements from GPT-2 to GPT-4 (10:48)
+
+Now, let's talk about efficiency improvements in tokenization from GPT-2 to GPT-4. GPT-4 has made significant strides in handling programming languages like Python. By grouping more whitespace into single tokens and increasing the token count from 50k to 100k, GPT-4 reduces token bloat and allows for denser input. This enables the transformer to consider a larger context when predicting the next token, resulting in better performance, especially in coding tasks.
+
+Here's an example of how GPT-4 handles Python code more efficiently:
+
+```python
+# GPT-2 tokenization
+" " -> token 220 (each space is a separate token)
+" if" -> a single token
+
+# GPT-4 tokenization
+"    " -> a single token (grouping spaces)
+```
+
+This improved handling of whitespace is a deliberate design choice by OpenAI, allowing the model to attend to more code before it when trying to predict the next token in the sequence. The result is a significant improvement in the model's ability to handle coding tasks.
+
+### Tokenizing Text for Language Models (15:05)
+
+Finally, let's discuss the actual process of tokenizing text for language models. Tokenization involves converting strings to integers for model input, which can support multiple languages and special characters like emojis. This process can get tricky because we want to support not just the simple English alphabet but a variety of languages and special characters found on the internet.
+
+For example, consider the Korean greeting "안녕하세요" (annyeonghaseyo) or an emoji like 😊. These need to be fed into transformers as well, but how do we do that? The answer lies in Unicode code points and encodings like UTF-8, which can translate Unicode text into byte streams.
+
+### Understanding UTF-8 Encoding (27:19)
+
+UTF-8 is a variable-length encoding that can translate Unicode to byte streams ranging from one to four bytes. It's preferred for its compatibility with ASCII and efficiency, making it widely used online. However, using UTF-8 naively in language models can lead to long byte sequences, which is why byte pair encoding (BPE) offers a more efficient solution.
