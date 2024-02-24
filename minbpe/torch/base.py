@@ -1,3 +1,7 @@
+"""
+Contains the PyTorch implementation of merge.
+"""
+
 import torch
 from torch import Tensor
 

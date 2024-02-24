@@ -1,3 +1,8 @@
+"""
+Inherits from GPT4Tokenizer and overrides the pre_encode method of
+RegexTokenizerTorch to permute the bytes
+"""
+
 from .regex import RegexTokenizerTorch
 from ..gpt4 import GPT4Tokenizer
 

@@ -1,5 +1,5 @@
 """
-Train torch Tokenizers on some data
+Train torch tokenizers on some data
 """
 
 import os
