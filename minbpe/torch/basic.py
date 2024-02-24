@@ -11,8 +11,8 @@ But:
 
 import torch
 from torch import Tensor
-from .base import Tokenizer
-from .base_torch import merge_torch
+from ..base import Tokenizer
+from .base import merge_torch
 
 
 class BasicTokenizerTorch(Tokenizer):

@@ -12,8 +12,8 @@ Unlike BasicTokenizer:
 import regex as re
 import torch
 from torch import Tensor
-from .base import Tokenizer, get_stats, merge
-from .base_torch import merge_torch
+from ..base import Tokenizer, get_stats, merge
+from .base import merge_torch
 
 
 # the main GPT text split patterns, see
