@@ -54,7 +54,7 @@ class BasicTokenizerTorch(Tokenizer):
     def __init__(self):
         super().__init__()
 
-    def train(self, text: str, vocab_size: int, verbose=False, device='cuda'):
+    def train(self, text: str, vocab_size: int, verbose=False, device='cpu'):
         assert vocab_size >= 256
         num_merges = vocab_size - 256
 
