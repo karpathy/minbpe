@@ -79,9 +79,9 @@ class BasicTokenizer(Tokenizer):
             # each token can only belong to one pair
             is_first_in_pair &= ~is_second_in_pair
             is_second_in_pair = torch.roll(is_first_in_pair, 1, 0)
-            # change the first element of every occurrence of the pair to the new id
+            # change the first element of every matching pair to the new token
             ids[is_first_in_pair] = i + 256
-            # remove the second element of every occurrence of the pair
+            # remove the second element of every matching pair
             ids = ids[~is_second_in_pair]
 
             if verbose:
