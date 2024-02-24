@@ -11,14 +11,11 @@ But:
 
 import torch
 from torch import Tensor
-from ..base import Tokenizer
 from .base import merge_torch
+from ..basic import BasicTokenizer
 
 
-class BasicTokenizerTorch(Tokenizer):
-
-    def __init__(self):
-        super().__init__()
+class BasicTokenizerTorch(BasicTokenizer):
 
     def train(self, text: str, vocab_size: int, verbose=False, device='cpu'):
         assert vocab_size >= 256
@@ -57,12 +54,6 @@ class BasicTokenizerTorch(Tokenizer):
         # save class variables
         self.merges = merges # used in encode()
         self.vocab = vocab   # used in decode()
-
-    def decode(self, ids):
-        # given ids (list of integers), return Python string
-        text_bytes = b"".join(self.vocab[idx] for idx in ids)
-        text = text_bytes.decode("utf-8", errors="replace")
-        return text
 
     def encode(self, text: str):
         # given a string text, return the token ids

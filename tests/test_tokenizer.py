@@ -3,7 +3,7 @@ import tiktoken
 import os
 
 from minbpe import BasicTokenizer, RegexTokenizer, GPT4Tokenizer
-from minbpe import BasicTokenizerTorch, RegexTokenizerTorch
+from minbpe import BasicTokenizerTorch, RegexTokenizerTorch, GPT4TokenizerTorch
 
 # -----------------------------------------------------------------------------
 # common test data
@@ -50,9 +50,11 @@ The ancestors of llamas are thought to have originated from the Great Plains of 
 # tests
 
 # test encode/decode identity for a few different strings
-@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, RegexTokenizer, GPT4Tokenizer, BasicTokenizerTorch, RegexTokenizerTorch])
+@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, RegexTokenizer, GPT4Tokenizer, BasicTokenizerTorch, RegexTokenizerTorch, GPT4TokenizerTorch])
 @pytest.mark.parametrize("text", test_strings)
 def test_encode_decode_identity(tokenizer_factory, text):
+    if tokenizer_factory == GPT4TokenizerTorch and text.startswith("FILE:"):
+        return # takes too long
     text = unpack(text)
     tokenizer = tokenizer_factory()
     ids = tokenizer.encode(text)
@@ -60,18 +62,22 @@ def test_encode_decode_identity(tokenizer_factory, text):
     assert text == decoded
 
 # test that our tokenizer matches the official GPT-4 tokenizer
+@pytest.mark.parametrize("tokenizer_factory", [GPT4Tokenizer, GPT4TokenizerTorch])
 @pytest.mark.parametrize("text", test_strings)
-def test_gpt4_tiktoken_equality(text):
+def test_gpt4_tiktoken_equality(tokenizer_factory, text):
+    if tokenizer_factory == GPT4TokenizerTorch and text.startswith("FILE:"):
+        return # takes too long
     text = unpack(text)
-    tokenizer = GPT4Tokenizer()
+    tokenizer = tokenizer_factory()
     enc = tiktoken.get_encoding("cl100k_base")
     tiktoken_ids = enc.encode(text)
     gpt4_tokenizer_ids = tokenizer.encode(text)
     assert gpt4_tokenizer_ids == tiktoken_ids
 
 # test the handling of special tokens
-def test_gpt4_tiktoken_equality_special_tokens():
-    tokenizer = GPT4Tokenizer()
+@pytest.mark.parametrize("tokenizer_factory", [GPT4Tokenizer, GPT4TokenizerTorch])
+def test_gpt4_tiktoken_equality_special_tokens(tokenizer_factory):
+    tokenizer = tokenizer_factory()
     enc = tiktoken.get_encoding("cl100k_base")
     tiktoken_ids = enc.encode(specials_string, allowed_special="all")
     gpt4_tokenizer_ids = tokenizer.encode(specials_string, allowed_special="all")
