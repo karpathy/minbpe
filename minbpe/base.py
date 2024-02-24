@@ -28,17 +28,16 @@ def merge(ids, pair, idx):
     of pair with the new integer token idx
     Example: ids=[1, 2, 3, 1, 2], pair=(1, 2), idx=4 -> [4, 3, 4]
     """
-    newids = []
     i = 0
-    while i < len(ids):
-        # if not at the very last position AND the pair matches, replace it
-        if ids[i] == pair[0] and i < len(ids) - 1 and ids[i+1] == pair[1]:
-            newids.append(idx)
-            i += 2
-        else:
-            newids.append(ids[i])
-            i += 1
-    return newids
+    n = len(ids)
+    while i < n:
+        if i < n - 1 and ids[i] == pair[0] and ids[i+1] == pair[1]:
+            ids.pop(i)
+            ids.pop(i)
+            ids.insert(i,idx)
+            n -= 1
+        i += 1
+    return ids
 
 # first two helper functions...
 def replace_control_characters(s: str) -> str:
