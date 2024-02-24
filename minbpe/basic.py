@@ -49,7 +49,7 @@ class BasicTokenizer(Tokenizer):
         self.merges = merges # used in encode()
         self.vocab = vocab   # used in decode()
 
-    def train_gpu(self, text: str, vocab_size: int, verbose=False):
+    def train_pytorch(self, text: str, vocab_size: int, verbose=False, device='cpu'):
         assert vocab_size >= 256
         num_merges = vocab_size - 256
 
@@ -57,36 +57,45 @@ class BasicTokenizer(Tokenizer):
         text_bytes = text.encode("utf-8") # raw bytes
         ids = list(text_bytes) # list of integers in range 0..255
 
-        ids = torch.tensor(ids, dtype=torch.int64).cuda()
-        merge_pairs = torch.zeros((num_merges, 2), dtype=torch.int64).cuda()
+        int_type = torch.int16 if vocab_size <= 2**15 else torch.int32
+        ids = torch.tensor(ids, dtype=int_type, device=device)
+        merges = torch.zeros((num_merges, 2), dtype=int_type, device=device)
+        false_tensor = torch.tensor([False], dtype=torch.bool, device=device)
 
         for i in range(num_merges):
+            # determine the most common pair to merge next
             pairs = torch.stack((ids[:-1], ids[1:]), dim=1)
             unique, counts = torch.unique(pairs, return_counts=True, dim=0)
             pair_index = torch.argmax(counts)
-            pair = unique[pair_index]
-            count = counts[pair_index]
+            pair, count = unique[pair_index], counts[pair_index]
+            merges[i] = pair
 
-            # create a mask for the pair
-            mask = torch.all(pairs == pair, dim=1)
-            # append a False to the mask to make it the same length as ids
-            mask = torch.cat((mask, torch.tensor([False]).cuda()))
+            # merge the pair
+            # create a mask for the first element of every matching pair
+            is_first_in_pair = torch.all(pairs == pair, axis=1)
+            is_first_in_pair = torch.cat((is_first_in_pair, false_tensor))
+            # create a mask for the second element of every matching pair
+            is_second_in_pair = torch.roll(is_first_in_pair, 1, 0)
+            # each token can only belong to one pair
+            is_first_in_pair &= ~is_second_in_pair
+            is_second_in_pair = torch.roll(is_first_in_pair, 1, 0)
             # change the first element of every occurrence of the pair to the new id
-            ids[mask] = i + 256
+            ids[is_first_in_pair] = i + 256
             # remove the second element of every occurrence of the pair
-            ids = ids[~torch.roll(mask, 1, 0)]
+            ids = ids[~is_second_in_pair]
 
-            merge_pairs[i] = pair
+            if verbose:
+                print(f"merge {i+1}/{num_merges}: {tuple(pair.tolist())} -> {i + 256} had {count} occurrences")
 
-        self.merges = {
-            tuple(pair.tolist()): j + 256
-            for j, pair in enumerate(merge_pairs)
-        }
+        merges = merges.cpu().numpy()
+        merges = [tuple(pair) for pair in merges]
+
+        self.merges = {pair: j + 256 for j, pair in enumerate(merges)}
 
         vocab = {idx: bytes([idx]) for idx in range(256)} # int -> bytes
         for i in range(num_merges):
-            pair = tuple(merge_pairs[i].tolist())
             idx = 256 + i
+            pair = merges[i]
             vocab[idx] = vocab[pair[0]] + vocab[pair[1]]
             if verbose:
                 print(f"merge {i+1}/{num_merges}: {pair} -> {idx} ({vocab[idx]})")
