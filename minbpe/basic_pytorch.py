@@ -48,9 +48,12 @@ class BasicPyTorchTokenizer(Tokenizer):
         text_bytes = text.encode("utf-8") # raw bytes
         ids = list(text_bytes) # list of integers in range 0..255
 
+        # iteratively merge the most common pairs to create new tokens
+        merges = {} # (int, int) -> int
+        vocab = {idx: bytes([idx]) for idx in range(256)} # int -> bytes
+
         int_type = torch.int16 if vocab_size <= 2**15 else torch.int32
         ids = torch.tensor(ids, dtype=int_type, device=device)
-        merges = torch.zeros((num_merges, 2), dtype=int_type, device=device)
 
         for i in range(num_merges):
             # determine the most common pair to merge next
@@ -59,25 +62,21 @@ class BasicPyTorchTokenizer(Tokenizer):
             pair_index = torch.argmax(counts)
             pair, count = unique[pair_index], counts[pair_index]
 
-            ids = merge(ids, pair, i + 256)
-            merges[i] = pair
-
-            if verbose:
-                print(f"merge {i+1}/{num_merges}: {tuple(pair.tolist())} -> {i + 256} had {count} occurrences")
-
-        merges = merges.cpu().numpy()
-        merges = [tuple(pair) for pair in merges]
-
-        self.merges = {pair: i + 256 for i, pair in enumerate(merges)}
-
-        vocab = {idx: bytes([idx]) for idx in range(256)} # int -> bytes
-        for i in range(num_merges):
             idx = i + 256
-            pair = merges[i]
+            ids = merge(ids, pair, idx)
+
+            pair = tuple(pair.tolist())
+
+            # save the merge
+            merges[pair] = idx
             vocab[idx] = vocab[pair[0]] + vocab[pair[1]]
+
             if verbose:
-                print(f"merge {i+1}/{num_merges}: {pair} -> {idx} ({vocab[idx]})")
-        self.vocab = vocab
+                print(f"merge {i+1}/{num_merges}: {pair} -> {idx} ({vocab[idx]}) had {count} occurrences")
+
+        # save class variables
+        self.merges = merges # used in encode()
+        self.vocab = vocab   # used in decode()
 
     def decode(self, ids):
         # given ids (list of integers), return Python string
