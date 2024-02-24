@@ -104,12 +104,16 @@ class BasicTokenizerTorch(Tokenizer):
         # given a string text, return the token ids
         text_bytes = text.encode("utf-8") # raw bytes
         ids = list(text_bytes) # list of integers in range 0..255
+        if len(self.merges) == 0:
+            return ids
 
         int_type = torch.int16 if len(self.merges) <= 2**15 else torch.int32
         ids = torch.tensor(ids, dtype=int_type, device=device)
-        merges = torch.tensor(list(self.merges), dtype=int_type, device=device)
 
-        while len(ids) >= 2 and len(merges) > 0:
+        merges = sorted(list(self.merges), key=lambda p: self.merges[p])
+        merges = torch.tensor(merges, dtype=int_type, device=device)
+
+        while len(ids) >= 2:
             # find the pair with the lowest merge index
             pairs = torch.stack((ids[:-1], ids[1:]), dim=1)
             unique: Tensor = torch.unique(pairs, dim=0)
