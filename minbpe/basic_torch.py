@@ -49,7 +49,7 @@ def merge(ids: Tensor, pair: Tensor, idx: int):
     return ids
 
 
-class BasicPyTorchTokenizer(Tokenizer):
+class BasicTokenizerTorch(Tokenizer):
 
     def __init__(self):
         super().__init__()
@@ -107,11 +107,9 @@ class BasicPyTorchTokenizer(Tokenizer):
 
         int_type = torch.int16 if len(self.merges) <= 2**15 else torch.int32
         ids = torch.tensor(ids, dtype=int_type, device=device)
+        merges = torch.tensor(list(self.merges), dtype=int_type, device=device)
 
-        merges = list(self.merges.keys())
-        merges = torch.tensor(merges, dtype=int_type, device=device)
-
-        while len(ids) >= 2:
+        while len(ids) >= 2 and len(merges) > 0:
             # find the pair with the lowest merge index
             pairs = torch.stack((ids[:-1], ids[1:]), dim=1)
             unique: Tensor = torch.unique(pairs, dim=0)
