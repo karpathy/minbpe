@@ -14,7 +14,7 @@ class RegexTokenizerTorch(RegexTokenizer):
 
     def train(self, text, vocab_size, verbose=False, device='cpu'):
         # TODO
-        super.train(text, vocab_size, verbose)
+        super().train(text, vocab_size, verbose)
 
     def pre_encode(self, text):
         # split text into chunks of text by categories defined in regex pattern
