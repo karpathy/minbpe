@@ -12,7 +12,7 @@ from ..regex import RegexTokenizer
 
 class RegexTokenizerTorch(RegexTokenizer):
 
-    def train(self, text, vocab_size, verbose=False, device='cpu'):
+    def train(self, text, vocab_size, verbose=False):
         # TODO
         super().train(text, vocab_size, verbose)
 

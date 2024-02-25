@@ -10,7 +10,7 @@ from ..basic import BasicTokenizer
 
 class BasicTokenizerTorch(BasicTokenizer):
 
-    def train(self, text: str, vocab_size: int, verbose=False, device='cpu'):
+    def train(self, text: str, vocab_size: int, verbose=False):
         assert vocab_size >= 256
         num_merges = vocab_size - 256
 
@@ -23,6 +23,7 @@ class BasicTokenizerTorch(BasicTokenizer):
         vocab = {idx: bytes([idx]) for idx in range(256)} # int -> bytes
 
         int_type = torch.int16 if vocab_size <= 2**15 else torch.int32
+        device = "cuda" if torch.cuda.is_available() else "cpu"
         ids = torch.tensor(ids, dtype=int_type, device=device)
 
         for i in range(num_merges):
