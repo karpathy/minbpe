@@ -114,44 +114,49 @@ The BPE algorithm itself is actually not too complicated. At a high level, here 
 3. Identify the most frequent pair of bytes 
 4. Replace this frequent pair with a new, single token and add it to the vocabulary
 5. Repeat steps 2-4, iteratively merging frequent pairs to build the vocabulary
-
-Let's walk through a concrete example. Suppose our training text is the following string of letters, where our "vocabulary" starts as just the raw letters A through D:
-
-```
-AABBABCDAACABAD
-``` 
-
-We start by scanning this and counting up all the consecutive pairs:
+<markdown "BPE Algorithm Example">
+Let's delve into an alternative example to clearly demonstrate the Byte Pair Encoding (BPE) Algorithm, maintaining the original tone and format for consistency. Imagine our training text is a simple sequence of characters:
 
 ```
-AA : 2
-AB : 3 
-BB : 1
-BC : 1
-CD : 1 
-DA : 1
-AC : 1 
-CA : 1
+ZZXXZZXX
 ```
 
-We see that the most frequent pair is "AB", occurring 3 times. So we will replace this pair with a new token "X", adding "X" to our vocabulary:
+Our initial vocabulary consists of the unique characters Z and X:
+
+First, we identify all consecutive pairs in the sequence:
 
 ```
-Vocabulary: A B C D X
-
-AABBXCXAACABAD
+ZZ : 2
+XX : 2
+ZX : 1
+XZ : 1
 ```
 
-We repeat the process, now scanning again and merging the next most frequent pair CD, replacing it with "Y":
-
+Noticing "ZZ" and "XX" as the most frequent pairs, we decide to replace "ZZ" with a new token "A", updating our vocabulary:
 
 ```
-Vocabulary: A B C D X Y
+Vocabulary: Z X A
 
-AABBXYAAYABAD
+AXXAXX
 ```
 
-And we repeat this process for a number of iterations until we are happy with the vocabulary size.
+After this initial replacement, we scan the updated string to identify the next set of frequent pairs:
+
+```
+AX : 2
+XX : 2
+XA : 1
+```
+
+Choosing "XX" for our next replacement, we introduce "B" as a new token to our vocabulary:
+
+```
+Vocabulary: Z X A B
+
+ABAB
+```
+
+This iterative process of scanning, counting, and merging continues until we achieve a desired vocabulary size, simplifying the original text's representation with each step.
 
 So let's now implement this in Python. We'll start with some text, encode it to bytes, and then:
 
