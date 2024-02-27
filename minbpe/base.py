@@ -5,7 +5,6 @@ It would be possible to be a lot more strict about the interface and
 e.g. isolating all regex/pattern parts to the RegexTokenizer, but
 some concessions are made for simplicity.
 """
-import unicodedata
 
 # -----------------------------------------------------------------------------
 # a few helper functions useful for both BasicTokenizer and RegexTokenizer
@@ -44,11 +43,11 @@ def merge(ids, pair, idx):
 def replace_control_characters(s: str) -> str:
     # we don't want to print control characters
     # which distort the output (e.g. \n or much worse)
-    # https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python/19016117#19016117
+    # https://stackoverflow.com/a/78031057/10693596
     # http://www.unicode.org/reports/tr44/#GC_Values_Table
     chars = []
     for ch in s:
-        if unicodedata.category(ch)[0] != "C":
+        if ch.isprintable():
             chars.append(ch) # this character is ok
         else:
             chars.append(f"\\u{ord(ch):04x}") # escape
