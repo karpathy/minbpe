@@ -2,8 +2,7 @@ import pytest
 import tiktoken
 import os
 
-from minbpe import BasicTokenizer, RegexTokenizer, GPT4Tokenizer
-from minbpe import BasicTokenizerTorch, RegexTokenizerTorch, GPT4TokenizerTorch
+from minbpe import BasicTokenizer, BasicTorchTokenizer, RegexTokenizer, GPT4Tokenizer
 
 # -----------------------------------------------------------------------------
 # common test data
@@ -50,11 +49,9 @@ The ancestors of llamas are thought to have originated from the Great Plains of 
 # tests
 
 # test encode/decode identity for a few different strings
-@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, RegexTokenizer, GPT4Tokenizer, BasicTokenizerTorch, RegexTokenizerTorch, GPT4TokenizerTorch])
+@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, BasicTorchTokenizer, RegexTokenizer, GPT4Tokenizer])
 @pytest.mark.parametrize("text", test_strings)
 def test_encode_decode_identity(tokenizer_factory, text):
-    if tokenizer_factory == GPT4TokenizerTorch and text.startswith("FILE:"):
-        return # takes too long
     text = unpack(text)
     tokenizer = tokenizer_factory()
     ids = tokenizer.encode(text)
@@ -62,29 +59,25 @@ def test_encode_decode_identity(tokenizer_factory, text):
     assert text == decoded
 
 # test that our tokenizer matches the official GPT-4 tokenizer
-@pytest.mark.parametrize("tokenizer_factory", [GPT4Tokenizer, GPT4TokenizerTorch])
 @pytest.mark.parametrize("text", test_strings)
-def test_gpt4_tiktoken_equality(tokenizer_factory, text):
-    if tokenizer_factory == GPT4TokenizerTorch and text.startswith("FILE:"):
-        return # takes too long
+def test_gpt4_tiktoken_equality(text):
     text = unpack(text)
-    tokenizer = tokenizer_factory()
+    tokenizer = GPT4Tokenizer()
     enc = tiktoken.get_encoding("cl100k_base")
     tiktoken_ids = enc.encode(text)
     gpt4_tokenizer_ids = tokenizer.encode(text)
     assert gpt4_tokenizer_ids == tiktoken_ids
 
 # test the handling of special tokens
-@pytest.mark.parametrize("tokenizer_factory", [GPT4Tokenizer, GPT4TokenizerTorch])
-def test_gpt4_tiktoken_equality_special_tokens(tokenizer_factory):
-    tokenizer = tokenizer_factory()
+def test_gpt4_tiktoken_equality_special_tokens():
+    tokenizer = GPT4Tokenizer()
     enc = tiktoken.get_encoding("cl100k_base")
     tiktoken_ids = enc.encode(specials_string, allowed_special="all")
     gpt4_tokenizer_ids = tokenizer.encode(specials_string, allowed_special="all")
     assert gpt4_tokenizer_ids == tiktoken_ids
 
 # reference test to add more tests in the future
-@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, RegexTokenizer, BasicTokenizerTorch, RegexTokenizerTorch])
+@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, BasicTorchTokenizer, RegexTokenizer])
 def test_wikipedia_example(tokenizer_factory):
     """
     Quick unit test, following along the Wikipedia example:
@@ -113,13 +106,12 @@ def test_wikipedia_example(tokenizer_factory):
     assert ids == [258, 100, 258, 97, 99]
     assert tokenizer.decode(tokenizer.encode(text)) == text
 
-@pytest.mark.parametrize("tokenizer_factory", [RegexTokenizer, RegexTokenizerTorch])
 @pytest.mark.parametrize("special_tokens", [{}, special_tokens])
-def test_save_load(tokenizer_factory, special_tokens):
+def test_save_load(special_tokens):
     # take a bit more complex piece of text and train the tokenizer, chosen at random
     text = llama_text
     # create a Tokenizer and do 64 merges
-    tokenizer = tokenizer_factory()
+    tokenizer = RegexTokenizer()
     tokenizer.train(text, 256 + 64)
     tokenizer.register_special_tokens(special_tokens)
     # verify that decode(encode(x)) == x
@@ -129,7 +121,7 @@ def test_save_load(tokenizer_factory, special_tokens):
     # save the tokenizer (TODO use a proper temporary directory)
     tokenizer.save("test_tokenizer_tmp")
     # re-load the tokenizer
-    tokenizer = tokenizer_factory()
+    tokenizer = RegexTokenizer()
     tokenizer.load("test_tokenizer_tmp.model")
     # verify that decode(encode(x)) == x
     assert tokenizer.decode(ids) == text
