@@ -140,26 +140,46 @@ class Tokenizer:
     def load(self, model_file):
         """Inverse of save() but only for the model file"""
         assert model_file.endswith(".model")
-        # read the model file
+
         merges = {}
         special_tokens = {}
         idx = 256
-        with open(model_file, 'r', encoding="utf-8") as f:
-            # read the version
-            version = f.readline().strip()
-            assert version == "minbpe v1"
-            # read the pattern
-            self.pattern = f.readline().strip()
-            # read the special tokens
-            num_special = int(f.readline().strip())
-            for _ in range(num_special):
-                special, special_idx = f.readline().strip().split()
-                special_tokens[special] = int(special_idx)
-            # read the merges
-            for line in f:
-                idx1, idx2 = map(int, line.split())
-                merges[(idx1, idx2)] = idx
-                idx += 1
+
+        try:
+            with open(model_file, 'r', encoding="utf-8") as f:
+                # read the version
+                version = f.readline().strip()
+                if version != "minbpe v1":
+                    raise ValueError(f"Unsupported model file version: {version}")
+
+                # read the pattern
+                self.pattern = f.readline().strip()
+
+                # read the special tokens
+                num_special = int(f.readline().strip())
+                for _ in range(num_special):
+                    line = f.readline().strip().split()
+                    if len(line) != 2:
+                        raise ValueError(f"Invalid special token line: {line}")
+                    special, special_idx = line
+                    special_tokens[special] = int(special_idx)
+
+                # read the merges
+                for line in f:
+                    line = line.split()
+                    if len(line) != 2:
+                        raise ValueError(f"Invalid merge line: {line}")
+                    idx1, idx2 = map(int, line)
+                    merges[(idx1, idx2)] = idx
+                    idx += 1
+
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Model file not found: {model_file}")
+        except ValueError as e:
+            raise ValueError(f"Error loading model file: {e}")
+        except Exception as e:
+            raise RuntimeError(f"Unexpected error loading model file: {e}")
+
         self.merges = merges
         self.special_tokens = special_tokens
         self.vocab = self._build_vocab()
