@@ -52,18 +52,25 @@ class RegexTokenizer(Tokenizer):
             for chunk_ids in ids:
                 # passing in stats will update it in place, adding up counts
                 get_stats(chunk_ids, stats)
-            # find the pair with the highest count
-            pair = max(stats, key=stats.get)
-            # mint a new token: assign it the next available id
-            idx = 256 + i
-            # replace all occurrences of pair in ids with idx
-            ids = [merge(chunk_ids, pair, idx) for chunk_ids in ids]
-            # save the merge
-            merges[pair] = idx
-            vocab[idx] = vocab[pair[0]] + vocab[pair[1]]
-            # prints
-            if verbose:
-                print(f"merge {i+1}/{num_merges}: {pair} -> {idx} ({vocab[idx]}) had {stats[pair]} occurrences")
+
+            # if there's at least a mergeable pair
+            if len(stats):
+                # find the pair with the highest count
+                pair = max(stats, key=stats.get)
+                # mint a new token: assign it the next available id
+                idx = 256 + i
+                # replace all occurrences of pair in ids with idx
+                ids = [merge(chunk_ids, pair, idx) for chunk_ids in ids]
+                # save the merge
+                merges[pair] = idx
+                vocab[idx] = vocab[pair[0]] + vocab[pair[1]]
+                # prints
+                if verbose:
+                    print(f"merge {i+1}/{num_merges}: {pair} -> {idx} ({vocab[idx]}) had {stats[pair]} occurrences")
+            else:
+                if verbose:
+                    print(f"there aren't enough pairs to merge, stopping at {i}/{num_merges}")
+                break
 
         # save class variables
         self.merges = merges # used in encode()
