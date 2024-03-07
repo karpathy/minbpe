@@ -5,6 +5,7 @@ It would be possible to be a lot more strict about the interface and
 e.g. isolating all regex/pattern parts to the RegexTokenizer, but
 some concessions are made for simplicity.
 """
+
 import unicodedata
 
 # -----------------------------------------------------------------------------
@@ -81,8 +82,16 @@ class Tokenizer:
         # Tokenizer can encode a string into a list of integers
         raise NotImplementedError
 
+    def encode_batch(self, text, **kwargs):
+        # Tokenizer can encode a batch of strings into a batch of integers lists
+        raise NotImplementedError
+
     def decode(self, ids):
         # Tokenizer can decode a list of integers into a string
+        raise NotImplementedError
+
+    def decode_batch(self, ids, **kwargs):
+        # Tokenizer can decode a batch of integer lists into a list of strings
         raise NotImplementedError
 
     def _build_vocab(self):
