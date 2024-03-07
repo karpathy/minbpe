@@ -3,3 +3,6 @@ __pycache__/
 models/**/*
 venv
 .venv
+*.pytest_cache
+*.model
+*.vocab
