@@ -43,7 +43,7 @@ def merge(ids, pair, idx):
     while i < n:
         if ids[i] == pair[0] and ids[i+1] == pair[1]:
             newids.append(idx)
-            i += 2  # Skip the next element since it's part of the found pair
+            i += 2 
         else:
             newids.append(ids[i])
             i += 1
