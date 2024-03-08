@@ -22,23 +22,38 @@ def get_stats(ids, counts=None):
     return counts
 
 
+
+
+
 def merge(ids, pair, idx):
     """
     In the list of integers (ids), replace all consecutive occurrences
     of pair with the new integer token idx
     Example: ids=[1, 2, 3, 1, 2], pair=(1, 2), idx=4 -> [4, 3, 4]
     """
+
+    if not ids:  # Early return for empty list
+        return []
+
     newids = []
     i = 0
-    while i < len(ids):
-        # if not at the very last position AND the pair matches, replace it
-        if ids[i] == pair[0] and i < len(ids) - 1 and ids[i+1] == pair[1]:
+    n = len(ids) - 1  # Adjust to pre-check the last element outside the loop
+
+    # Process until the second last element
+    while i < n:
+        if ids[i] == pair[0] and ids[i+1] == pair[1]:
             newids.append(idx)
-            i += 2
+            i += 2  # Skip the next element since it's part of the found pair
         else:
             newids.append(ids[i])
             i += 1
+    
+    # Handle the last element if i haven't reached it
+    if i == n:
+        newids.append(ids[i])
+    
     return newids
+
 
 # first two helper functions...
 def replace_control_characters(s: str) -> str:
