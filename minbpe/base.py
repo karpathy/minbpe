@@ -6,6 +6,7 @@ e.g. isolating all regex/pattern parts to the RegexTokenizer, but
 some concessions are made for simplicity.
 """
 import unicodedata
+from collections import Counter
 
 # -----------------------------------------------------------------------------
 # a few helper functions useful for both BasicTokenizer and RegexTokenizer
@@ -21,7 +22,20 @@ def get_stats(ids, counts=None):
         counts[pair] = counts.get(pair, 0) + 1
     return counts
 
-
+def get_stats_basic(ids, counts=None):
+    """
+    Given a list of integers, return a dictionary of counts of consecutive pairs
+    Example: [1, 2, 3, 1, 2] -> {(1, 2): 2, (2, 3): 1, (3, 1): 1}
+    Optionally allows to update an existing dictionary of counts.
+    """
+    if counts is None:
+        counts = Counter()
+    else:
+        counts = Counter(counts)
+    
+    # Increment counts using Counter.update for consecutive pairs
+    counts.update(zip(ids, ids[1:]))
+    return dict(counts)
 
 
 
