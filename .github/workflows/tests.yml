@@ -3,13 +3,13 @@ name: Tests for minbpe
 on:
   pull_request:
     branches:
-      - main
+      - master
     paths:
     - "minbpe/**.py"
     - "tests/**.py"
   push:
     branches:
-      - main
+      - master
     paths:
     - "minbpe/**.py"
     - "tests/**.py"
