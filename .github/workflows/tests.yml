@@ -32,4 +32,5 @@ jobs:
       - name: Install dependencies
         run: pip install tiktoken pytest regex
       - name: Run tests for minbpe
-        run: python -m pytest -n 2 tests
+        run: |
+          python -m pytest -n 2 tests
