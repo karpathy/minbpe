@@ -30,7 +30,7 @@ jobs:
         with:
           python-version: "3.8"
       - name: Install dependencies
-        run: pip install tiktoken pytest regex
+        run: pip install tiktoken pytest pytest-xdist regex
       - name: Run tests for minbpe
         run: |
           python -m pytest -n 2 tests
