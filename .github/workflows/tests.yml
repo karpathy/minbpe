@@ -5,12 +5,14 @@ on:
     branches:
       - master
     paths:
+      - ".github/**.yml"
       - "minbpe/**.py"
       - "tests/**.py"
   push:
     branches:
       - master
     paths:
+      - ".github/**.yml"
       - "minbpe/**.py"
       - "tests/**.py"
 
