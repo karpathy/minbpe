@@ -1,12 +1,6 @@
 """
-Minimal (byte-level) Byte Pair Encoding tokenizer.
-
-Algorithmically follows along the GPT tokenizer:
-https://github.com/openai/gpt-2/blob/master/src/encoder.py
-
-Unlike BasicTokenizer:
-- RegexTokenizer handles an optional regex splitting pattern.
-- RegexTokenizer handles optional special tokens.
+Like Regex tokenizer, but much faster. Uses algorithm from https://arxiv.org/abs/2306.16837 for training and 
+the naive algorithm for tokenization (with regex splitting). 
 """
 
 import regex as re
@@ -20,7 +14,7 @@ import time
 GPT2_SPLIT_PATTERN = r"""'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+"""
 GPT4_SPLIT_PATTERN = r"""'(?i:[sdmt]|ll|ve|re)|[^\r\n\p{L}\p{N}]?+\p{L}+|\p{N}{1,3}| ?[^\s\p{L}\p{N}]++[\r\n]*|\s*[\r\n]|\s+(?!\S)|\s+"""
 
-class RegexTokenizer(Tokenizer):
+class RegexTokenizerFast(Tokenizer):
     def __init__(self, pattern=None):
         """
         - pattern: optional string to override the default (GPT-4 split pattern)
@@ -32,6 +26,7 @@ class RegexTokenizer(Tokenizer):
         self.compiled_pattern = re.compile(self.pattern)
         self.special_tokens = {}
         self.inverse_special_tokens = {}
+        self.init_tokens = 256
     
     def __len__(self):
         return len(self.vocab)
@@ -128,6 +123,9 @@ class RegexTokenizer(Tokenizer):
         return text
 
     def encode_ordinary(self, text, ids=None, tqdm_bar=None):
+        """
+        very efficient tokenization algorithm. Most work is done in the regex splitting
+        """
         if len(text) == 0:
             return []
         # encode text. use np because much faster (thanks chatgpt):
@@ -162,7 +160,10 @@ class RegexTokenizer(Tokenizer):
         if none_raise, then an error is raised if any special token is encountered in text
         this is the default tiktoken behavior right now as well
         any other behavior is either annoying, or a major footgun
+
+        !!! much slower than encode_ordinary. Don't use it until it is optimized !!!
         """
+        print("you are using not yet optimized encode function")
         # decode the user desire w.r.t. handling of special tokens
         special = None
         if allowed_special == "all":
