@@ -1,6 +1,9 @@
-# minbpe
+# QuickBPE
 
-Minimal, clean code for the (byte-level) Byte Pair Encoding (BPE) algorithm commonly used in LLM tokenization. The BPE algorithm is "byte-level" because it runs on UTF-8 encoded strings.
+This is a much faster version of the MinBPE tokenizer from andrej karpathy. The main functions are optimized in c++ and then connected to python using ctypes, so that you can call them conveniently. I already successfully tokenized the entire TinyStories dataset in around 8 minutes, which is ~3.5 gb of text. The main bottleneck is now the regex splitting, which is hard to optimize since i decided to keep it integrated into python (so that it is still easy to change the split pattern). The training algorithm i used is from [here](https://arxiv.org/abs/2306.16837), which mentions a running time of O(nlog(m)). This is an overestimation. The true running time is O(n + mlog(m)) i think, which is linear in the sequence length in practice. The training took about 2 minutes on ~100mb of text, which seems to be decent. But there is probably still a lot of improvement that can be done. Also the encode function is much slower than the encode_ordinary function if the special tokens are distributed evenly because of the splitting. This still needs to be fixed.
+
+# How to use
+You can use the repo by 
 
 This algorithm was popularized for LLMs by the [GPT-2 paper](https://d4mucfpksywv.cloudfront.net/better-language-models/language_models_are_unsupervised_multitask_learners.pdf) and the associated GPT-2 [code release](https://github.com/openai/gpt-2) from OpenAI. [Sennrich et al. 2015](https://arxiv.org/abs/1508.07909) is cited as the original reference for the use of BPE in NLP applications. Today, all modern LLMs (e.g. GPT, Llama, Mistral) use this algorithm to train their tokenizers.
 
