@@ -85,9 +85,18 @@ class GPT4Tokenizer(RegexTokenizer):
         return ids
 
     def decode(self, ids):
-        # we have to un-permute the bytes before we decode
-        text_bytes = b"".join(self.vocab[idx] for idx in ids)
-        text_bytes = bytes(self.inverse_byte_shuffle[b] for b in text_bytes)
+        # given ids (list of integers), return Python string
+        part_bytes = []
+        for idx in ids:
+            if idx in self.vocab:
+                shuffled_bytes = self.vocab[idx]
+                unshuffled_bytes = bytes([self.inverse_byte_shuffle[b] for b in shuffled_bytes])
+                part_bytes.append(unshuffled_bytes)
+            elif idx in self.inverse_special_tokens:
+                part_bytes.append(self.inverse_special_tokens[idx].encode("utf-8"))
+            else:
+                raise ValueError(f"invalid token id: {idx}")
+        text_bytes = b"".join(part_bytes)
         text = text_bytes.decode("utf-8", errors="replace")
         return text
 
