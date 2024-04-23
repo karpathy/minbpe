@@ -3,19 +3,18 @@
 This is a much faster version of the MinBPE tokenizer from andrej karpathy. The main functions are optimized in c++ and then connected to python using ctypes, so that you can call them conveniently. I already successfully tokenized the entire TinyStories dataset in around 8 minutes, which is ~3.5 gb of text. The main bottleneck is now the regex splitting, which is hard to optimize since i decided to keep it integrated into python (so that it is still easy to change the split pattern). The training algorithm i used is from [here](https://arxiv.org/abs/2306.16837), which mentions a running time of O(nlog(m)). This is an overestimation. The true running time is O(n + mlog(m)) i think, which is linear in the sequence length in practice. The training took about 2 minutes on ~100mb of text, which seems to be decent. But there is probably still a lot of improvement that can be done. Also the encode function is much slower than the encode_ordinary function if the special tokens are distributed evenly because of the splitting. This still needs to be fixed.
 
 # How to use
-You can use the repo in the same way as the MinBPE repo. Make sure to use the 
+You can use the repo in the same way as the MinBPE repo. Make sure to use RegexTokenizerFast
 
 ```python
-from minbpe import BasicTokenizer
-tokenizer = BasicTokenizer()
+from minbpe import RegexTokenizerFast
+tokenizer = RegexTokenizerFast()
 text = "aaabdaaabac"
 tokenizer.train(text, 256 + 3) # 256 are the byte tokens, then do 3 merges
-print(tokenizer.encode(text))
+print(tokenizer.encode_ordinary(text))
 # [258, 100, 258, 97, 99]
 print(tokenizer.decode([258, 100, 258, 97, 99]))
 # aaabdaaabac
 tokenizer.save("toy")
-# writes two files: toy.model (for loading) and toy.vocab (for viewing)
 ```
 
 According to Wikipedia, running bpe on the input string: "aaabdaaabac" for 3 merges results in the string: "XdXac" where  X=ZY, Y=ab, and Z=aa. The tricky thing to note is that minbpe always allocates the 256 individual bytes as tokens, and then merges bytes as needed from there. So for us a=97, b=98, c=99, d=100 (their [ASCII](https://www.asciitable.com) values). Then when (a,a) is merged to Z, Z will become 256. Likewise Y will become 257 and X 258. So we start with the 256 bytes, and do 3 merges to get to the result above, with the expected output of [258, 100, 258, 97, 99].
