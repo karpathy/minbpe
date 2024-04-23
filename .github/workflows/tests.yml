@@ -1,0 +1,36 @@
+name: Tests for minbpe
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - ".github/**.yml"
+      - "minbpe/**.py"
+      - "tests/**.py"
+  push:
+    branches:
+      - master
+    paths:
+      - ".github/**.yml"
+      - "minbpe/**.py"
+      - "tests/**.py"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.8"
+      - name: Install dependencies
+        run: pip install tiktoken pytest pytest-xdist regex
+      - name: Run tests for minbpe
+        run: |
+          python -m pytest -n 2 tests
