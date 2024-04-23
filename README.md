@@ -20,7 +20,7 @@ tokenizer.save("toy")
 ```
 
 ## todos
-
+- make the encode function faster by implementing it in c++ (or find some other way)
 - rename GPT4Tokenizer to GPTTokenizer and support GPT-2/GPT-3/GPT-3.5 as well?
 - write a LlamaTokenizer similar to GPT4Tokenizer (i.e. attempt sentencepiece equivalent)
 
