@@ -90,7 +90,7 @@ tokenizer.save("mymodel") # writes mymodel.model and mymodel.vocab
 tokenizer.load("mymodel.model") # loads the model back, the vocab is just for vis
 ```
 
-If you instead want to follow along with OpenAI did for their text tokenizer, it's a good idea to adopt their approach of using regex pattern to split the text by categories. The GPT-4 pattern is a default with the `RegexTokenizer`, so you'd simple do something like:
+If you instead want to follow along with what OpenAI did for their text tokenizer, it's a good idea to adopt their approach of using regex pattern to split the text by categories. The GPT-4 pattern is a default with the `RegexTokenizer`, so you'd simple do something like:
 
 ```python
 from minbpe import RegexTokenizer
