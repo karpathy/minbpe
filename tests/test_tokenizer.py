@@ -2,7 +2,7 @@ import pytest
 import tiktoken
 import os
 
-from minbpe import BasicTokenizer, RegexTokenizer, GPT4Tokenizer
+from minbpe import BasicTokenizer, BasicTorchTokenizer, RegexTokenizer, GPT4Tokenizer
 
 # -----------------------------------------------------------------------------
 # common test data
@@ -49,7 +49,7 @@ The ancestors of llamas are thought to have originated from the Great Plains of 
 # tests
 
 # test encode/decode identity for a few different strings
-@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, RegexTokenizer, GPT4Tokenizer])
+@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, BasicTorchTokenizer, RegexTokenizer, GPT4Tokenizer])
 @pytest.mark.parametrize("text", test_strings)
 def test_encode_decode_identity(tokenizer_factory, text):
     text = unpack(text)
@@ -77,7 +77,7 @@ def test_gpt4_tiktoken_equality_special_tokens():
     assert gpt4_tokenizer_ids == tiktoken_ids
 
 # reference test to add more tests in the future
-@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, RegexTokenizer])
+@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, BasicTorchTokenizer, RegexTokenizer])
 def test_wikipedia_example(tokenizer_factory):
     """
     Quick unit test, following along the Wikipedia example:
