@@ -131,5 +131,16 @@ def test_save_load(special_tokens):
     for file in ["test_tokenizer_tmp.model", "test_tokenizer_tmp.vocab"]:
         os.remove(file)
 
+@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, RegexTokenizer])
+def test_batch_encoding_decoding_ops(tokenizer_factory):
+    tokenizer = tokenizer_factory()
+    tokenizer.train("aaabdaaabac", 256 + 3)
+    # batch of string to encode
+    batch = ["aaabdaaabac", "aaabdaaa"]
+    ids = tokenizer.encode_batch(batch)
+    # decoding, and encoding verification
+    assert ids == [[258, 100, 258, 97, 99], [258, 100, 257]]
+    assert tokenizer.decode_batch(tokenizer.encode_batch(batch)) == batch
+
 if __name__ == "__main__":
     pytest.main()

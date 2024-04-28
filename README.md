@@ -86,6 +86,8 @@ tokenizer = BasicTokenizer()
 tokenizer.train(very_long_training_string, vocab_size=4096)
 tokenizer.encode("hello world") # string -> tokens
 tokenizer.decode([1000, 2000, 3000]) # tokens -> string
+tokenizer.encode_batch(["hello world", "bye world"]) # list[string] -> list[tokens]
+tokenizer.decode_batch([[1000, 2000, 3000], [1000, 2000, 3000]]) # list[tokens] -> list[string]
 tokenizer.save("mymodel") # writes mymodel.model and mymodel.vocab
 tokenizer.load("mymodel.model") # loads the model back, the vocab is just for vis
 ```
@@ -98,6 +100,8 @@ tokenizer = RegexTokenizer()
 tokenizer.train(very_long_training_string, vocab_size=32768)
 tokenizer.encode("hello world") # string -> tokens
 tokenizer.decode([1000, 2000, 3000]) # tokens -> string
+tokenizer.encode_batch(["hello world", "bye world"]) # list[string] -> list[tokens]
+tokenizer.decode_batch([[1000, 2000, 3000], [1000, 2000, 3000]]) # list[tokens] -> list[string]
 tokenizer.save("tok32k") # writes tok32k.model and tok32k.vocab
 tokenizer.load("tok32k.model") # loads the model back from disk
 ```

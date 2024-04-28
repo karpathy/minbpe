@@ -9,6 +9,8 @@ Unlike BasicTokenizer:
 - RegexTokenizer handles optional special tokens.
 """
 
+from concurrent.futures import ThreadPoolExecutor
+import functools
 import regex as re
 from .base import Tokenizer, get_stats, merge
 
@@ -88,6 +90,14 @@ class RegexTokenizer(Tokenizer):
         text_bytes = b"".join(part_bytes)
         text = text_bytes.decode("utf-8", errors="replace")
         return text
+    
+    def decode_batch(self, ids, num_threads=8):
+        # decoding a batch of ids
+        # e.g. tokenizer.decode_batch([[258, 100, 258, 256], [258, 100, 258]])
+        # result: ['aaabdaaabaa', 'aaabdaaab']
+        decoder = functools.partial(self.decode)
+        with ThreadPoolExecutor(num_threads) as e:
+            return list(e.map(decoder, ids))
 
     def _encode_chunk(self, text_bytes):
         # return the token ids
@@ -162,3 +172,11 @@ class RegexTokenizer(Tokenizer):
                 # this is an ordinary sequence, encode it normally
                 ids.extend(self.encode_ordinary(part))
         return ids
+    
+    def encode_batch(self, text, allowed_special="none_raise", num_threads=8, **kwargs):
+        # encoding a batch of text
+        # e.g. tokenizer.encode_batch(['aaabdaaabaa', 'aaabdaaab'])
+        # result: [[258, 100, 258, 256], [258, 100, 258]]
+        encoder = functools.partial(self.encode, allowed_special=allowed_special)
+        with ThreadPoolExecutor(num_threads) as e:
+            return list(e.map(encoder, text))
