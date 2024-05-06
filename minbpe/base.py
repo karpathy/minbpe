@@ -17,8 +17,14 @@ def get_stats(ids, counts=None):
     Optionally allows to update an existing dictionary of counts
     """
     counts = {} if counts is None else counts
+    lastPair = None
     for pair in zip(ids, ids[1:]): # iterate consecutive elements
-        counts[pair] = counts.get(pair, 0) + 1
+        #check the pairs to not overlap, for example "aaa" has just one pair "aa"
+        if lastPair != pair:
+            lastPair = pair
+            counts[pair] = counts.get(pair, 0) + 1
+        else:
+            lastPair = None
     return counts
 
 
