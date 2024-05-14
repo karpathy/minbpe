@@ -129,6 +129,7 @@ to run the tests. (-v is verbose, slightly prettier).
 ## community extensions
 
 * [gnp/minbpe-rs](https://github.com/gnp/minbpe-rs): A Rust implementation of `minbpe` providing (near) one-to-one correspondence with the Python version
+* [dorjeduck/minbpe.mojo](https://github.com/dorjeduck/minbpe.mojo): A Mojo implementation of `minbpe` 
 
 ## exercise
 
