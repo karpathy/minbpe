@@ -29,10 +29,10 @@ def merge(ids, pair, idx):
     Example: ids=[1, 2, 3, 1, 2], pair=(1, 2), idx=4 -> [4, 3, 4]
     """
     newids = []
-    i = 0
-    while i < len(ids):
+    i = 0; lenids = len(ids)
+    while i < lenids:
         # if not at the very last position AND the pair matches, replace it
-        if ids[i] == pair[0] and i < len(ids) - 1 and ids[i+1] == pair[1]:
+        if ids[i] == pair[0] and i < lenids - 1 and ids[i+1] == pair[1]:
             newids.append(idx)
             i += 2
         else:
