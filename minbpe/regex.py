@@ -47,7 +47,7 @@ class RegexTokenizer(Tokenizer):
         tmp = {}
         for byte_str in ids:
             byte_str = bytes(byte_str)
-            tmp[byte_str] = tmp[byte_str] + 1 if byte_str in tmp else 1
+            tmp[byte_str] = tmp.get(byte_str, 0) + 1
 
         ids = [list(k) for k in map(list, tmp.keys())]
         idsw = list(tmp.values())
