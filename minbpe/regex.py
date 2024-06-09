@@ -119,14 +119,16 @@ class RegexTokenizer(Tokenizer):
 
     def encode_ordinary(self, text):
         """Encoding that ignores any special tokens."""
+        cache = {}
         # split text into chunks of text by categories defined in regex pattern
         text_chunks = re.findall(self.compiled_pattern, text)
         # all chunks of text are encoded separately, then results are joined
         ids = []
         for chunk in text_chunks:
-            chunk_bytes = chunk.encode("utf-8") # raw bytes
-            chunk_ids = self._encode_chunk(chunk_bytes)
-            ids.extend(chunk_ids)
+            if chunk not in cache:
+                chunk_bytes = chunk.encode("utf-8")  # raw bytes
+                cache[chunk] = self._encode_chunk(chunk_bytes)
+            ids.extend(cache[chunk])
         return ids
 
     def encode(self, text, allowed_special="none_raise"):
