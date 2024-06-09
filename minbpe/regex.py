@@ -41,7 +41,16 @@ class RegexTokenizer(Tokenizer):
         text_chunks = re.findall(self.compiled_pattern, text)
 
         # input text preprocessing
-        ids = [list(ch.encode("utf-8")) for ch in text_chunks]
+        ids = (list(ch.encode("utf-8")) for ch in text_chunks)
+
+        #keep just one instance of identical chunks, keep their count in idsw
+        tmp = {}
+        for byte_str in ids:
+            byte_str = bytes(byte_str)
+            tmp[byte_str] = tmp.get(byte_str, 0) + 1
+
+        ids = [list(k) for k in map(list, tmp.keys())]
+        idsw = list(tmp.values())
 
         # iteratively merge the most common pairs to create new tokens
         merges = {} # (int, int) -> int
@@ -49,9 +58,9 @@ class RegexTokenizer(Tokenizer):
         for i in range(num_merges):
             # count the number of times every consecutive pair appears
             stats = {}
-            for chunk_ids in ids:
+            for j, chunk_ids in enumerate(ids):
                 # passing in stats will update it in place, adding up counts
-                get_stats(chunk_ids, stats)
+                get_stats(chunk_ids, stats, idsw[j])
             # find the pair with the highest count
             pair = max(stats, key=stats.get)
             # mint a new token: assign it the next available id
@@ -110,14 +119,16 @@ class RegexTokenizer(Tokenizer):
 
     def encode_ordinary(self, text):
         """Encoding that ignores any special tokens."""
+        cache = {}
         # split text into chunks of text by categories defined in regex pattern
         text_chunks = re.findall(self.compiled_pattern, text)
         # all chunks of text are encoded separately, then results are joined
         ids = []
         for chunk in text_chunks:
-            chunk_bytes = chunk.encode("utf-8") # raw bytes
-            chunk_ids = self._encode_chunk(chunk_bytes)
-            ids.extend(chunk_ids)
+            if chunk not in cache:
+                chunk_bytes = chunk.encode("utf-8")  # raw bytes
+                cache[chunk] = self._encode_chunk(chunk_bytes)
+            ids.extend(cache[chunk])
         return ids
 
     def encode(self, text, allowed_special="none_raise"):
