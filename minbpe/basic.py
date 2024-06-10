@@ -72,3 +72,15 @@ class BasicTokenizer(Tokenizer):
             idx = self.merges[pair]
             ids = merge(ids, pair, idx)
         return ids
+
+    def my_encode(self, text):
+        # given a string text, return the token ids
+        text_bytes = text.encode("utf-8") # raw bytes
+        ids = list(text_bytes) # list of integers in range 0..255
+        res = []
+        for i in ids:
+            curr = i
+            while res and (res[-1], curr) in self.merges:
+                curr = self.merges[(res.pop(), curr)]
+            res.append(curr)
+        return res

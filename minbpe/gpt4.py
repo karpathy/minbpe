@@ -80,12 +80,14 @@ class GPT4Tokenizer(RegexTokenizer):
 
     def _encode_chunk(self, text_bytes):
         # before we start processing bytes, we have to permute them
+        # bytes -> shuffle -> encode
         text_bytes = bytes(self.byte_shuffle[b] for b in text_bytes)
         ids = super()._encode_chunk(text_bytes)
         return ids
 
     def decode(self, ids):
         # we have to un-permute the bytes before we decode
+        # ids -> bytes -> inverse_shuffle -> decode
         text_bytes = b"".join(self.vocab[idx] for idx in ids)
         text_bytes = bytes(self.inverse_byte_shuffle[b] for b in text_bytes)
         text = text_bytes.decode("utf-8", errors="replace")

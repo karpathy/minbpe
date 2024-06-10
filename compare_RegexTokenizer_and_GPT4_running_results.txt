@@ -1,0 +1,23 @@
+(base) luwei@luwei-mbp minbpe % python compare_RegexTokenizer_and_GPT4.py
+
+Step 3
+
+
+input text: hello world!!!? (안녕하세요!) lol123 😉
+
+ids: [15339, 1917, 12340, 30, 320, 31495, 230, 75265, 243, 92245, 16715, 28509, 4513, 57037]
+
+decoded_text match input text
+
+my_gpt4_ids: [15339, 1917, 12340, 30, 320, 31495, 230, 75265, 243, 92245, 16715, 28509, 4513, 57037]
+
+my_gpt4_decoded_text match input text
+
+my_regex_ids (without gpt4's byte_shuffle): [263, 301, 111, 340, 258, 509, 33, 33, 33, 63, 293, 236, 149, 136, 235, 133, 149, 237, 149, 152, 236, 132, 184, 236, 154, 148, 33, 41, 442, 412, 49, 484, 32, 240, 159, 152, 137]
+
+my_decoded_text match input text
+
+
+Step 4
+
+ids with special tokens: [100257, 15339, 1917]

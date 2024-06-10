@@ -1,0 +1,527 @@
+(base) luwei@luwei-mbp minbpe % python train.py
+merge 1/256: (101, 32) -> 256 (b'e ') had 2981 occurrences
+merge 2/256: (44, 32) -> 257 (b', ') had 2961 occurrences
+merge 3/256: (100, 32) -> 258 (b'd ') had 2617 occurrences
+merge 4/256: (46, 32) -> 259 (b'. ') had 2560 occurrences
+merge 5/256: (114, 32) -> 260 (b'r ') had 2428 occurrences
+merge 6/256: (50, 48) -> 261 (b'20') had 2365 occurrences
+merge 7/256: (115, 32) -> 262 (b's ') had 2053 occurrences
+merge 8/256: (105, 110) -> 263 (b'in') had 2006 occurrences
+merge 9/256: (111, 110) -> 264 (b'on') had 1815 occurrences
+merge 10/256: (114, 105) -> 265 (b'ri') had 1805 occurrences
+merge 11/256: (116, 32) -> 266 (b't ') had 1802 occurrences
+merge 12/256: (116, 104) -> 267 (b'th') had 1737 occurrences
+merge 13/256: (101, 258) -> 268 (b'ed ') had 1736 occurrences
+merge 14/256: (257, 261) -> 269 (b', 20') had 1705 occurrences
+merge 15/256: (97, 110) -> 270 (b'an') had 1487 occurrences
+merge 16/256: (97, 114) -> 271 (b'ar') had 1360 occurrences
+merge 17/256: (101, 260) -> 272 (b'er ') had 1356 occurrences
+merge 18/256: (121, 32) -> 273 (b'y ') had 1248 occurrences
+merge 19/256: (97, 108) -> 274 (b'al') had 1164 occurrences
+merge 20/256: (267, 256) -> 275 (b'the ') had 1142 occurrences
+merge 21/256: (118, 268) -> 276 (b'ved ') had 1104 occurrences
+merge 22/256: (119, 105) -> 277 (b'wi') had 1049 occurrences
+merge 23/256: (101, 114) -> 278 (b'er') had 897 occurrences
+merge 24/256: (264, 32) -> 279 (b'on ') had 880 occurrences
+merge 25/256: (277, 102) -> 280 (b'wif') had 871 occurrences
+merge 26/256: (82, 101) -> 281 (b'Re') had 870 occurrences
+merge 27/256: (83, 280) -> 282 (b'Swif') had 867 occurrences
+merge 28/256: (111, 260) -> 283 (b'or ') had 859 occurrences
+merge 29/256: (99, 104) -> 284 (b'ch') had 816 occurrences
+merge 30/256: (269, 49) -> 285 (b', 201') had 811 occurrences
+merge 31/256: (111, 109) -> 286 (b'om') had 789 occurrences
+merge 32/256: (98, 272) -> 287 (b'ber ') had 752 occurrences
+merge 33/256: (32, 275) -> 288 (b' the ') had 748 occurrences
+merge 34/256: (97, 121) -> 289 (b'ay') had 744 occurrences
+merge 35/256: (101, 110) -> 290 (b'en') had 740 occurrences
+merge 36/256: (111, 114) -> 291 (b'or') had 737 occurrences
+merge 37/256: (274, 32) -> 292 (b'al ') had 705 occurrences
+merge 38/256: (101, 109) -> 293 (b'em') had 703 occurrences
+merge 39/256: (46, 10) -> 294 (b'.\n') had 685 occurrences
+merge 40/256: (265, 101) -> 295 (b'rie') had 685 occurrences
+merge 41/256: (263, 103) -> 296 (b'ing') had 684 occurrences
+merge 42/256: (269, 50) -> 297 (b', 202') had 673 occurrences
+merge 43/256: (116, 105) -> 298 (b'ti') had 666 occurrences
+merge 44/256: (289, 108) -> 299 (b'ayl') had 654 occurrences
+merge 45/256: (34, 259) -> 300 (b'". ') had 651 occurrences
+merge 46/256: (108, 108) -> 301 (b'll') had 649 occurrences
+merge 47/256: (84, 299) -> 302 (b'Tayl') had 647 occurrences
+merge 48/256: (116, 295) -> 303 (b'trie') had 644 occurrences
+merge 49/256: (294, 32) -> 304 (b'.\n ') had 643 occurrences
+merge 50/256: (116, 111) -> 305 (b'to') had 642 occurrences
+merge 51/256: (259, 281) -> 306 (b'. Re') had 640 occurrences
+merge 52/256: (306, 303) -> 307 (b'. Retrie') had 639 occurrences
+merge 53/256: (307, 276) -> 308 (b'. Retrieved ') had 639 occurrences
+merge 54/256: (302, 283) -> 309 (b'Taylor ') had 611 occurrences
+merge 55/256: (101, 115) -> 310 (b'es') had 606 occurrences
+merge 56/256: (309, 282) -> 311 (b'Taylor Swif') had 598 occurrences
+merge 57/256: (117, 115) -> 312 (b'us') had 561 occurrences
+merge 58/256: (114, 286) -> 313 (b'rom') had 532 occurrences
+merge 59/256: (293, 287) -> 314 (b'ember ') had 528 occurrences
+merge 60/256: (41, 259) -> 315 (b'). ') had 524 occurrences
+merge 61/256: (65, 114) -> 316 (b'Ar') had 509 occurrences
+merge 62/256: (102, 313) -> 317 (b'from') had 503 occurrences
+merge 63/256: (315, 34) -> 318 (b'). "') had 499 occurrences
+merge 64/256: (270, 258) -> 319 (b'and ') had 498 occurrences
+merge 65/256: (114, 101) -> 320 (b're') had 495 occurrences
+merge 66/256: (111, 117) -> 321 (b'ou') had 487 occurrences
+merge 67/256: (111, 265) -> 322 (b'ori') had 469 occurrences
+merge 68/256: (111, 102) -> 323 (b'of') had 466 occurrences
+merge 69/256: (103, 263) -> 324 (b'gin') had 465 occurrences
+merge 70/256: (296, 32) -> 325 (b'ing ') had 464 occurrences
+merge 71/256: (284, 105) -> 326 (b'chi') had 458 occurrences
+merge 72/256: (93, 32) -> 327 (b'] ') had 458 occurrences
+merge 73/256: (324, 292) -> 328 (b'ginal ') had 453 occurrences
+merge 74/256: (317, 288) -> 329 (b'from the ') had 447 occurrences
+merge 75/256: (322, 328) -> 330 (b'original ') had 446 occurrences
+merge 76/256: (104, 256) -> 331 (b'he ') had 440 occurrences
+merge 77/256: (316, 326) -> 332 (b'Archi') had 440 occurrences
+merge 78/256: (332, 276) -> 333 (b'Archived ') had 440 occurrences
+merge 79/256: (329, 330) -> 334 (b'from the original ') had 440 occurrences
+merge 80/256: (333, 334) -> 335 (b'Archived from the original ') had 439 occurrences
+merge 81/256: (335, 279) -> 336 (b'Archived from the original on ') had 438 occurrences
+merge 82/256: (259, 336) -> 337 (b'. Archived from the original on ') had 433 occurrences
+merge 83/256: (97, 32) -> 338 (b'a ') had 420 occurrences
+merge 84/256: (115, 116) -> 339 (b'st') had 409 occurrences
+merge 85/256: (105, 99) -> 340 (b'ic') had 406 occurrences
+merge 86/256: (46, 91) -> 341 (b'.[') had 381 occurrences
+merge 87/256: (101, 99) -> 342 (b'ec') had 374 occurrences
+merge 88/256: (105, 301) -> 343 (b'ill') had 367 occurrences
+merge 89/256: (39, 262) -> 344 (b"'s ") had 367 occurrences
+merge 90/256: (311, 266) -> 345 (b'Taylor Swift ') had 352 occurrences
+merge 91/256: (111, 118) -> 346 (b'ov') had 343 occurrences
+merge 92/256: (97, 116) -> 347 (b'at') had 334 occurrences
+merge 93/256: (97, 262) -> 348 (b'as ') had 315 occurrences
+merge 94/256: (101, 262) -> 349 (b'es ') had 309 occurrences
+merge 95/256: (74, 117) -> 350 (b'Ju') had 307 occurrences
+merge 96/256: (323, 32) -> 351 (b'of ') had 306 occurrences
+merge 97/256: (305, 32) -> 352 (b'to ') had 284 occurrences
+merge 98/256: (117, 109) -> 353 (b'um') had 281 occurrences
+merge 99/256: (84, 331) -> 354 (b'The ') had 277 occurrences
+merge 100/256: (271, 100) -> 355 (b'ard') had 277 occurrences
+merge 101/256: (263, 32) -> 356 (b'in ') had 276 occurrences
+merge 102/256: (270, 32) -> 357 (b'an ') had 276 occurrences
+merge 103/256: (101, 108) -> 358 (b'el') had 275 occurrences
+merge 104/256: (297, 51) -> 359 (b', 2023') had 271 occurrences
+merge 105/256: (271, 273) -> 360 (b'ary ') had 259 occurrences
+merge 106/256: (267, 32) -> 361 (b'th ') had 258 occurrences
+merge 107/256: (97, 109) -> 362 (b'am') had 257 occurrences
+merge 108/256: (108, 273) -> 363 (b'ly ') had 250 occurrences
+merge 109/256: (111, 112) -> 364 (b'op') had 249 occurrences
+merge 110/256: (311, 116) -> 365 (b'Taylor Swift') had 246 occurrences
+merge 111/256: (116, 114) -> 366 (b'tr') had 243 occurrences
+merge 112/256: (105, 115) -> 367 (b'is') had 234 occurrences
+merge 113/256: (104, 272) -> 368 (b'her ') had 232 occurrences
+merge 114/256: (111, 32) -> 369 (b'o ') had 225 occurrences
+merge 115/256: (117, 360) -> 370 (b'uary ') had 225 occurrences
+merge 116/256: (78, 346) -> 371 (b'Nov') had 222 occurrences
+merge 117/256: (312, 340) -> 372 (b'usic') had 221 occurrences
+merge 118/256: (371, 314) -> 373 (b'November ') had 221 occurrences
+merge 119/256: (101, 119) -> 374 (b'ew') had 219 occurrences
+merge 120/256: (97, 266) -> 375 (b'at ') had 219 occurrences
+merge 121/256: (108, 32) -> 376 (b'l ') had 218 occurrences
+merge 122/256: (58, 32) -> 377 (b': ') had 213 occurrences
+merge 123/256: (98, 111) -> 378 (b'bo') had 210 occurrences
+merge 124/256: (282, 266) -> 379 (b'Swift ') had 208 occurrences
+merge 125/256: (68, 342) -> 380 (b'Dec') had 207 occurrences
+merge 126/256: (105, 116) -> 381 (b'it') had 206 occurrences
+merge 127/256: (105, 103) -> 382 (b'ig') had 205 occurrences
+merge 128/256: (66, 343) -> 383 (b'Bill') had 205 occurrences
+merge 129/256: (49, 48) -> 384 (b'10') had 204 occurrences
+merge 130/256: (97, 115) -> 385 (b'as') had 203 occurrences
+merge 131/256: (264, 103) -> 386 (b'ong') had 202 occurrences
+merge 132/256: (79, 99) -> 387 (b'Oc') had 200 occurrences
+merge 133/256: (97, 298) -> 388 (b'ati') had 199 occurrences
+merge 134/256: (83, 116) -> 389 (b'St') had 198 occurrences
+merge 135/256: (387, 305) -> 390 (b'Octo') had 198 occurrences
+merge 136/256: (390, 287) -> 391 (b'October ') had 198 occurrences
+merge 137/256: (97, 99) -> 392 (b'ac') had 197 occurrences
+merge 138/256: (111, 119) -> 393 (b'ow') had 196 occurrences
+merge 139/256: (380, 314) -> 394 (b'December ') had 194 occurrences
+merge 140/256: (383, 378) -> 395 (b'Billbo') had 191 occurrences
+merge 141/256: (97, 100) -> 396 (b'ad') had 190 occurrences
+merge 142/256: (108, 101) -> 397 (b'le') had 190 occurrences
+merge 143/256: (117, 114) -> 398 (b'ur') had 188 occurrences
+merge 144/256: (102, 283) -> 399 (b'for ') had 188 occurrences
+merge 145/256: (32, 40) -> 400 (b' (') had 187 occurrences
+merge 146/256: (297, 50) -> 401 (b', 2022') had 187 occurrences
+merge 147/256: (117, 103) -> 402 (b'ug') had 185 occurrences
+merge 148/256: (284, 32) -> 403 (b'ch ') had 184 occurrences
+merge 149/256: (115, 266) -> 404 (b'st ') had 181 occurrences
+merge 150/256: (321, 110) -> 405 (b'oun') had 176 occurrences
+merge 151/256: (98, 353) -> 406 (b'bum') had 172 occurrences
+merge 152/256: (111, 108) -> 407 (b'ol') had 171 occurrences
+merge 153/256: (312, 266) -> 408 (b'ust ') had 171 occurrences
+merge 154/256: (101, 98) -> 409 (b'eb') had 170 occurrences
+merge 155/256: (77, 97) -> 410 (b'Ma') had 170 occurrences
+merge 156/256: (350, 363) -> 411 (b'July ') had 170 occurrences
+merge 157/256: (318, 345) -> 412 (b'). "Taylor Swift ') had 169 occurrences
+merge 158/256: (107, 32) -> 413 (b'k ') had 165 occurrences
+merge 159/256: (278, 115) -> 414 (b'ers') had 164 occurrences
+merge 160/256: (93, 91) -> 415 (b'][') had 164 occurrences
+merge 161/256: (65, 402) -> 416 (b'Aug') had 164 occurrences
+merge 162/256: (416, 408) -> 417 (b'August ') had 163 occurrences
+merge 163/256: (105, 100) -> 418 (b'id') had 161 occurrences
+merge 164/256: (297, 49) -> 419 (b', 2021') had 160 occurrences
+merge 165/256: (109, 101) -> 420 (b'me') had 159 occurrences
+merge 166/256: (101, 112) -> 421 (b'ep') had 156 occurrences
+merge 167/256: (261, 49) -> 422 (b'201') had 149 occurrences
+merge 168/256: (50, 51) -> 423 (b'23') had 145 occurrences
+merge 169/256: (285, 50) -> 424 (b', 2012') had 144 occurrences
+merge 170/256: (101, 271) -> 425 (b'ear') had 140 occurrences
+merge 171/256: (269, 261) -> 426 (b', 2020') had 140 occurrences
+merge 172/256: (73, 110) -> 427 (b'In') had 139 occurrences
+merge 173/256: (102, 105) -> 428 (b'fi') had 139 occurrences
+merge 174/256: (110, 256) -> 429 (b'ne ') had 139 occurrences
+merge 175/256: (395, 355) -> 430 (b'Billboard') had 136 occurrences
+merge 176/256: (265, 116) -> 431 (b'rit') had 134 occurrences
+merge 177/256: (104, 105) -> 432 (b'hi') had 133 occurrences
+merge 178/256: (372, 32) -> 433 (b'usic ') had 133 occurrences
+merge 179/256: (304, 34) -> 434 (b'.\n "') had 133 occurrences
+merge 180/256: (78, 374) -> 435 (b'New') had 131 occurrences
+merge 181/256: (100, 105) -> 436 (b'di') had 130 occurrences
+merge 182/256: (65, 112) -> 437 (b'Ap') had 130 occurrences
+merge 183/256: (285, 57) -> 438 (b', 2019') had 129 occurrences
+merge 184/256: (114, 111) -> 439 (b'ro') had 128 occurrences
+merge 185/256: (39, 32) -> 440 (b"' ") had 128 occurrences
+merge 186/256: (115, 257) -> 441 (b's, ') had 127 occurrences
+merge 187/256: (350, 429) -> 442 (b'June ') had 127 occurrences
+merge 188/256: (323, 288) -> 443 (b'of the ') had 126 occurrences
+merge 189/256: (99, 291) -> 444 (b'cor') had 126 occurrences
+merge 190/256: (50, 49) -> 445 (b'21') had 126 occurrences
+merge 191/256: (49, 57) -> 446 (b'19') had 124 occurrences
+merge 192/256: (105, 109) -> 447 (b'im') had 123 occurrences
+merge 193/256: (290, 32) -> 448 (b'en ') had 123 occurrences
+merge 194/256: (409, 114) -> 449 (b'ebr') had 122 occurrences
+merge 195/256: (290, 116) -> 450 (b'ent') had 121 occurrences
+merge 196/256: (111, 301) -> 451 (b'oll') had 121 occurrences
+merge 197/256: (77, 271) -> 452 (b'Mar') had 120 occurrences
+merge 198/256: (265, 99) -> 453 (b'ric') had 120 occurrences
+merge 199/256: (277, 361) -> 454 (b'with ') had 120 occurrences
+merge 200/256: (44, 91) -> 455 (b',[') had 118 occurrences
+merge 201/256: (70, 449) -> 456 (b'Febr') had 118 occurrences
+merge 202/256: (456, 370) -> 457 (b'February ') had 118 occurrences
+merge 203/256: (365, 344) -> 458 (b"Taylor Swift's ") had 118 occurrences
+merge 204/256: (300, 430) -> 459 (b'". Billboard') had 118 occurrences
+merge 205/256: (101, 97) -> 460 (b'ea') had 116 occurrences
+merge 206/256: (285, 54) -> 461 (b', 2016') had 116 occurrences
+merge 207/256: (421, 116) -> 462 (b'ept') had 115 occurrences
+merge 208/256: (410, 273) -> 463 (b'May ') had 115 occurrences
+merge 209/256: (285, 53) -> 464 (b', 2015') had 115 occurrences
+merge 210/256: (437, 265) -> 465 (b'Apri') had 115 occurrences
+merge 211/256: (465, 376) -> 466 (b'April ') had 115 occurrences
+merge 212/256: (108, 256) -> 467 (b'le ') had 113 occurrences
+merge 213/256: (65, 119) -> 468 (b'Aw') had 112 occurrences
+merge 214/256: (388, 264) -> 469 (b'ation') had 112 occurrences
+merge 215/256: (83, 462) -> 470 (b'Sept') had 112 occurrences
+merge 216/256: (470, 314) -> 471 (b'September ') had 112 occurrences
+merge 217/256: (114, 97) -> 472 (b'ra') had 111 occurrences
+merge 218/256: (274, 406) -> 473 (b'album') had 111 occurrences
+merge 219/256: (67, 104) -> 474 (b'Ch') had 110 occurrences
+merge 220/256: (118, 256) -> 475 (b've ') had 109 occurrences
+merge 221/256: (310, 266) -> 476 (b'est ') had 108 occurrences
+merge 222/256: (74, 270) -> 477 (b'Jan') had 108 occurrences
+merge 223/256: (50, 50) -> 478 (b'22') had 107 occurrences
+merge 224/256: (477, 370) -> 479 (b'January ') had 107 occurrences
+merge 225/256: (405, 366) -> 480 (b'ountr') had 106 occurrences
+merge 226/256: (382, 104) -> 481 (b'igh') had 106 occurrences
+merge 227/256: (300, 354) -> 482 (b'". The ') had 106 occurrences
+merge 228/256: (359, 304) -> 483 (b', 2023.\n ') had 106 occurrences
+merge 229/256: (49, 51) -> 484 (b'13') had 105 occurrences
+merge 230/256: (65, 108) -> 485 (b'Al') had 105 occurrences
+merge 231/256: (101, 116) -> 486 (b'et') had 105 occurrences
+merge 232/256: (310, 115) -> 487 (b'ess') had 103 occurrences
+merge 233/256: (452, 403) -> 488 (b'March ') had 103 occurrences
+merge 234/256: (117, 116) -> 489 (b'ut') had 102 occurrences
+merge 235/256: (119, 431) -> 490 (b'writ') had 101 occurrences
+merge 236/256: (108, 111) -> 491 (b'lo') had 99 occurrences
+merge 237/256: (115, 386) -> 492 (b'song') had 97 occurrences
+merge 238/256: (226, 128) -> 493 (b'\xe2\x80') had 97 occurrences
+merge 239/256: (271, 258) -> 494 (b'ard ') had 97 occurrences
+merge 240/256: (48, 32) -> 495 (b'0 ') had 97 occurrences
+merge 241/256: (117, 108) -> 496 (b'ul') had 96 occurrences
+merge 242/256: (50, 52) -> 497 (b'24') had 95 occurrences
+merge 243/256: (105, 262) -> 498 (b'is ') had 94 occurrences
+merge 244/256: (298, 99) -> 499 (b'tic') had 93 occurrences
+merge 245/256: (97, 103) -> 500 (b'ag') had 93 occurrences
+merge 246/256: (34, 32) -> 501 (b'" ') had 93 occurrences
+merge 247/256: (65, 110) -> 502 (b'An') had 93 occurrences
+merge 248/256: (49, 56) -> 503 (b'18') had 93 occurrences
+merge 249/256: (102, 291) -> 504 (b'for') had 90 occurrences
+merge 250/256: (480, 273) -> 505 (b'ountry ') had 89 occurrences
+merge 251/256: (65, 420) -> 506 (b'Ame') had 88 occurrences
+merge 252/256: (506, 453) -> 507 (b'Americ') had 88 occurrences
+merge 253/256: (32, 84) -> 508 (b' T') had 88 occurrences
+merge 254/256: (115, 296) -> 509 (b'sing') had 87 occurrences
+merge 255/256: (119, 348) -> 510 (b'was ') had 86 occurrences
+merge 256/256: (49, 50) -> 511 (b'12') had 86 occurrences
+merge 1/256: (101, 114) -> 256 (b'er') had 2359 occurrences
+merge 2/256: (50, 48) -> 257 (b'20') had 2187 occurrences
+merge 3/256: (111, 114) -> 258 (b'or') had 2076 occurrences
+merge 4/256: (105, 110) -> 259 (b'in') had 2006 occurrences
+merge 5/256: (101, 100) -> 260 (b'ed') had 1876 occurrences
+merge 6/256: (32, 116) -> 261 (b' t') had 1824 occurrences
+merge 7/256: (111, 110) -> 262 (b'on') had 1815 occurrences
+merge 8/256: (104, 101) -> 263 (b'he') had 1772 occurrences
+merge 9/256: (32, 83) -> 264 (b' S') had 1633 occurrences
+merge 10/256: (97, 114) -> 265 (b'ar') had 1519 occurrences
+merge 11/256: (97, 110) -> 266 (b'an') had 1487 occurrences
+merge 12/256: (32, 65) -> 267 (b' A') had 1335 occurrences
+merge 13/256: (261, 263) -> 268 (b' the') had 1169 occurrences
+merge 14/256: (97, 108) -> 269 (b'al') had 1164 occurrences
+merge 15/256: (114, 105) -> 270 (b'ri') had 1156 occurrences
+merge 16/256: (118, 260) -> 271 (b'ved') had 1104 occurrences
+merge 17/256: (115, 116) -> 272 (b'st') had 1089 occurrences
+merge 18/256: (119, 105) -> 273 (b'wi') had 1049 occurrences
+merge 19/256: (32, 82) -> 274 (b' R') had 1045 occurrences
+merge 20/256: (257, 49) -> 275 (b'201') had 981 occurrences
+merge 21/256: (32, 102) -> 276 (b' f') had 967 occurrences
+merge 22/256: (257, 50) -> 277 (b'202') had 952 occurrences
+merge 23/256: (32, 84) -> 278 (b' T') had 934 occurrences
+merge 24/256: (102, 116) -> 279 (b'ft') had 934 occurrences
+merge 25/256: (97, 121) -> 280 (b'ay') had 900 occurrences
+merge 26/256: (32, 34) -> 281 (b' "') had 882 occurrences
+merge 27/256: (273, 279) -> 282 (b'wift') had 870 occurrences
+merge 28/256: (101, 116) -> 283 (b'et') had 852 occurrences
+merge 29/256: (264, 282) -> 284 (b' Swift') had 817 occurrences
+merge 30/256: (99, 104) -> 285 (b'ch') had 797 occurrences
+merge 31/256: (98, 256) -> 286 (b'ber') had 797 occurrences
+merge 32/256: (97, 116) -> 287 (b'at') had 790 occurrences
+merge 33/256: (111, 109) -> 288 (b'om') had 789 occurrences
+merge 34/256: (101, 115) -> 289 (b'es') had 743 occurrences
+merge 35/256: (101, 110) -> 290 (b'en') had 724 occurrences
+merge 36/256: (101, 109) -> 291 (b'em') had 699 occurrences
+merge 37/256: (34, 46) -> 292 (b'".') had 693 occurrences
+merge 38/256: (32, 40) -> 293 (b' (') had 685 occurrences
+merge 39/256: (46, 10) -> 294 (b'.\n') had 684 occurrences
+merge 40/256: (259, 103) -> 295 (b'ing') had 684 occurrences
+merge 41/256: (108, 258) -> 296 (b'lor') had 680 occurrences
+merge 42/256: (32, 77) -> 297 (b' M') had 662 occurrences
+merge 43/256: (105, 103) -> 298 (b'ig') had 655 occurrences
+merge 44/256: (32, 262) -> 299 (b' on') had 654 occurrences
+merge 45/256: (280, 296) -> 300 (b'aylor') had 650 occurrences
+merge 46/256: (108, 108) -> 301 (b'll') had 649 occurrences
+merge 47/256: (270, 101) -> 302 (b'rie') had 646 occurrences
+merge 48/256: (274, 283) -> 303 (b' Ret') had 643 occurrences
+merge 49/256: (303, 302) -> 304 (b' Retrie') had 639 occurrences
+merge 50/256: (304, 271) -> 305 (b' Retrieved') had 639 occurrences
+merge 51/256: (32, 115) -> 306 (b' s') had 609 occurrences
+merge 52/256: (105, 99) -> 307 (b'ic') had 593 occurrences
+merge 53/256: (266, 100) -> 308 (b'and') had 573 occurrences
+merge 54/256: (111, 117) -> 309 (b'ou') had 555 occurrences
+merge 55/256: (101, 99) -> 310 (b'ec') had 554 occurrences
+merge 56/256: (32, 97) -> 311 (b' a') had 553 occurrences
+merge 57/256: (41, 46) -> 312 (b').') had 533 occurrences
+merge 58/256: (114, 288) -> 313 (b'rom') had 532 occurrences
+merge 59/256: (32, 66) -> 314 (b' B') had 530 occurrences
+merge 60/256: (291, 286) -> 315 (b'ember') had 529 occurrences
+merge 61/256: (32, 111) -> 316 (b' o') had 527 occurrences
+merge 62/256: (276, 313) -> 317 (b' from') had 503 occurrences
+merge 63/256: (267, 114) -> 318 (b' Ar') had 495 occurrences
+merge 64/256: (32, 308) -> 319 (b' and') had 480 occurrences
+merge 65/256: (32, 67) -> 320 (b' C') had 472 occurrences
+merge 66/256: (32, 78) -> 321 (b' N') had 472 occurrences
+merge 67/256: (32, 258) -> 322 (b' or') had 465 occurrences
+merge 68/256: (285, 105) -> 323 (b'chi') had 458 occurrences
+merge 69/256: (32, 74) -> 324 (b' J') had 457 occurrences
+merge 70/256: (259, 269) -> 325 (b'inal') had 456 occurrences
+merge 71/256: (322, 298) -> 326 (b' orig') had 448 occurrences
+merge 72/256: (326, 325) -> 327 (b' original') had 446 occurrences
+merge 73/256: (318, 323) -> 328 (b' Archi') had 440 occurrences
+merge 74/256: (328, 271) -> 329 (b' Archived') had 440 occurrences
+merge 75/256: (316, 102) -> 330 (b' of') had 439 occurrences
+merge 76/256: (32, 104) -> 331 (b' h') had 432 occurrences
+merge 77/256: (32, 259) -> 332 (b' in') had 404 occurrences
+merge 78/256: (114, 101) -> 333 (b're') had 403 occurrences
+merge 79/256: (84, 300) -> 334 (b'Taylor') had 392 occurrences
+merge 80/256: (105, 116) -> 335 (b'it') had 386 occurrences
+merge 81/256: (97, 115) -> 336 (b'as') had 384 occurrences
+merge 82/256: (32, 112) -> 337 (b' p') had 381 occurrences
+merge 83/256: (105, 262) -> 338 (b'ion') had 381 occurrences
+merge 84/256: (32, 68) -> 339 (b' D') had 380 occurrences
+merge 85/256: (32, 119) -> 340 (b' w') had 380 occurrences
+merge 86/256: (265, 100) -> 341 (b'ard') had 374 occurrences
+merge 87/256: (105, 301) -> 342 (b'ill') had 371 occurrences
+merge 88/256: (39, 115) -> 343 (b"'s") had 368 occurrences
+merge 89/256: (32, 109) -> 344 (b' m') had 359 occurrences
+merge 90/256: (32, 70) -> 345 (b' F') had 356 occurrences
+merge 91/256: (32, 87) -> 346 (b' W') had 353 occurrences
+merge 92/256: (108, 101) -> 347 (b'le') had 345 occurrences
+merge 93/256: (261, 111) -> 348 (b' to') had 340 occurrences
+merge 94/256: (32, 99) -> 349 (b' c') had 340 occurrences
+merge 95/256: (46, 91) -> 350 (b'.[') had 332 occurrences
+merge 96/256: (111, 118) -> 351 (b'ov') had 317 occurrences
+merge 97/256: (108, 121) -> 352 (b'ly') had 314 occurrences
+merge 98/256: (117, 115) -> 353 (b'us') had 312 occurrences
+merge 99/256: (32, 72) -> 354 (b' H') had 310 occurrences
+merge 100/256: (105, 115) -> 355 (b'is') had 307 occurrences
+merge 101/256: (32, 80) -> 356 (b' P') had 302 occurrences
+merge 102/256: (116, 104) -> 357 (b'th') had 290 occurrences
+merge 103/256: (99, 116) -> 358 (b'ct') had 282 occurrences
+merge 104/256: (117, 109) -> 359 (b'um') had 281 occurrences
+merge 105/256: (32, 98) -> 360 (b' b') had 280 occurrences
+merge 106/256: (32, 71) -> 361 (b' G') had 277 occurrences
+merge 107/256: (265, 121) -> 362 (b'ary') had 267 occurrences
+merge 108/256: (32, 73) -> 363 (b' I') had 264 occurrences
+merge 109/256: (278, 300) -> 364 (b' Taylor') had 255 occurrences
+merge 110/256: (105, 272) -> 365 (b'ist') had 248 occurrences
+merge 111/256: (32, 100) -> 366 (b' d') had 247 occurrences
+merge 112/256: (97, 109) -> 367 (b'am') had 247 occurrences
+merge 113/256: (32, 79) -> 368 (b' O') had 247 occurrences
+merge 114/256: (111, 112) -> 369 (b'op') had 243 occurrences
+merge 115/256: (324, 117) -> 370 (b' Ju') had 239 occurrences
+merge 116/256: (331, 256) -> 371 (b' her') had 235 occurrences
+merge 117/256: (32, 76) -> 372 (b' L') had 228 occurrences
+merge 118/256: (117, 272) -> 373 (b'ust') had 228 occurrences
+merge 119/256: (97, 100) -> 374 (b'ad') had 225 occurrences
+merge 120/256: (278, 263) -> 375 (b' The') had 225 occurrences
+merge 121/256: (117, 362) -> 376 (b'uary') had 225 occurrences
+merge 122/256: (290, 116) -> 377 (b'ent') had 223 occurrences
+merge 123/256: (353, 307) -> 378 (b'usic') had 221 occurrences
+merge 124/256: (351, 315) -> 379 (b'ovember') had 221 occurrences
+merge 125/256: (101, 119) -> 380 (b'ew') had 216 occurrences
+merge 126/256: (256, 115) -> 381 (b'ers') had 215 occurrences
+merge 127/256: (265, 116) -> 382 (b'art') had 204 occurrences
+merge 128/256: (105, 100) -> 383 (b'id') had 204 occurrences
+merge 129/256: (32, 69) -> 384 (b' E') had 203 occurrences
+merge 130/256: (101, 108) -> 385 (b'el') had 203 occurrences
+merge 131/256: (262, 103) -> 386 (b'ong') had 202 occurrences
+merge 132/256: (105, 109) -> 387 (b'im') had 202 occurrences
+merge 133/256: (111, 286) -> 388 (b'ober') had 202 occurrences
+merge 134/256: (101, 112) -> 389 (b'ep') had 201 occurrences
+merge 135/256: (276, 258) -> 390 (b' for') had 199 occurrences
+merge 136/256: (358, 388) -> 391 (b'ctober') had 198 occurrences
+merge 137/256: (98, 111) -> 392 (b'bo') had 197 occurrences
+merge 138/256: (314, 342) -> 393 (b' Bill') had 196 occurrences
+merge 139/256: (310, 315) -> 394 (b'ecember') had 195 occurrences
+merge 140/256: (264, 116) -> 395 (b' St') had 195 occurrences
+merge 141/256: (392, 341) -> 396 (b'board') had 192 occurrences
+merge 142/256: (111, 119) -> 397 (b'ow') had 186 occurrences
+merge 143/256: (117, 103) -> 398 (b'ug') had 185 occurrences
+merge 144/256: (111, 116) -> 399 (b'ot') had 184 occurrences
+merge 145/256: (393, 396) -> 400 (b' Billboard') had 184 occurrences
+merge 146/256: (49, 48) -> 401 (b'10') had 183 occurrences
+merge 147/256: (110, 116) -> 402 (b'nt') had 182 occurrences
+merge 148/256: (110, 101) -> 403 (b'ne') had 182 occurrences
+merge 149/256: (101, 265) -> 404 (b'ear') had 179 occurrences
+merge 150/256: (309, 114) -> 405 (b'our') had 179 occurrences
+merge 151/256: (270, 116) -> 406 (b'rit') had 177 occurrences
+merge 152/256: (105, 114) -> 407 (b'ir') had 176 occurrences
+merge 153/256: (98, 359) -> 408 (b'bum') had 172 occurrences
+merge 154/256: (117, 114) -> 409 (b'ur') had 171 occurrences
+merge 155/256: (287, 338) -> 410 (b'ation') had 171 occurrences
+merge 156/256: (257, 48) -> 411 (b'200') had 171 occurrences
+merge 157/256: (111, 108) -> 412 (b'ol') had 168 occurrences
+merge 158/256: (289, 115) -> 413 (b'ess') had 166 occurrences
+merge 159/256: (32, 114) -> 414 (b' r') had 164 occurrences
+merge 160/256: (93, 91) -> 415 (b'][') had 164 occurrences
+merge 161/256: (398, 373) -> 416 (b'ugust') had 164 occurrences
+merge 162/256: (32, 86) -> 417 (b' V') had 161 occurrences
+merge 163/256: (32, 39) -> 418 (b" '") had 160 occurrences
+merge 164/256: (101, 98) -> 419 (b'eb') had 157 occurrences
+merge 165/256: (32, 269) -> 420 (b' al') had 153 occurrences
+merge 166/256: (105, 118) -> 421 (b'iv') had 152 occurrences
+merge 167/256: (32, 89) -> 422 (b' Y') had 152 occurrences
+merge 168/256: (117, 116) -> 423 (b'ut') had 151 occurrences
+merge 169/256: (32, 273) -> 424 (b' wi') had 150 occurrences
+merge 170/256: (114, 121) -> 425 (b'ry') had 149 occurrences
+merge 171/256: (101, 272) -> 426 (b'est') had 144 occurrences
+merge 172/256: (424, 357) -> 427 (b' with') had 143 occurrences
+merge 173/256: (114, 97) -> 428 (b'ra') had 141 occurrences
+merge 174/256: (339, 394) -> 429 (b' December') had 140 occurrences
+merge 175/256: (321, 379) -> 430 (b' November') had 138 occurrences
+merge 176/256: (32, 287) -> 431 (b' at') had 133 occurrences
+merge 177/256: (32, 333) -> 432 (b' re') had 130 occurrences
+merge 178/256: (370, 352) -> 433 (b' July') had 129 occurrences
+merge 179/256: (261, 104) -> 434 (b' th') had 127 occurrences
+merge 180/256: (32, 110) -> 435 (b' n') had 127 occurrences
+merge 181/256: (267, 416) -> 436 (b' August') had 127 occurrences
+merge 182/256: (258, 100) -> 437 (b'ord') had 126 occurrences
+merge 183/256: (119, 341) -> 438 (b'ward') had 125 occurrences
+merge 184/256: (49, 57) -> 439 (b'19') had 125 occurrences
+merge 185/256: (32, 75) -> 440 (b' K') had 125 occurrences
+merge 186/256: (368, 391) -> 441 (b' October') had 125 occurrences
+merge 187/256: (32, 108) -> 442 (b' l') had 123 occurrences
+merge 188/256: (111, 301) -> 443 (b'oll') had 122 occurrences
+merge 189/256: (112, 270) -> 444 (b'pri') had 122 occurrences
+merge 190/256: (117, 108) -> 445 (b'ul') had 121 occurrences
+merge 191/256: (389, 116) -> 446 (b'ept') had 121 occurrences
+merge 192/256: (297, 378) -> 447 (b' Music') had 119 occurrences
+merge 193/256: (32, 85) -> 448 (b' U') had 119 occurrences
+merge 194/256: (111, 115) -> 449 (b'os') had 119 occurrences
+merge 195/256: (419, 114) -> 450 (b'ebr') had 119 occurrences
+merge 196/256: (311, 115) -> 451 (b' as') had 118 occurrences
+merge 197/256: (110, 100) -> 452 (b'nd') had 118 occurrences
+merge 198/256: (44, 91) -> 453 (b',[') had 118 occurrences
+merge 199/256: (450, 376) -> 454 (b'ebruary') had 118 occurrences
+merge 200/256: (321, 380) -> 455 (b' New') had 117 occurrences
+merge 201/256: (32, 272) -> 456 (b' st') had 116 occurrences
+merge 202/256: (111, 100) -> 457 (b'od') had 115 occurrences
+merge 203/256: (97, 107) -> 458 (b'ak') had 115 occurrences
+merge 204/256: (444, 108) -> 459 (b'pril') had 115 occurrences
+merge 205/256: (309, 402) -> 460 (b'ount') had 114 occurrences
+merge 206/256: (320, 104) -> 461 (b' Ch') had 114 occurrences
+merge 207/256: (99, 101) -> 462 (b'ce') had 113 occurrences
+merge 208/256: (446, 315) -> 463 (b'eptember') had 112 occurrences
+merge 209/256: (420, 408) -> 464 (b' album') had 110 occurrences
+merge 210/256: (105, 108) -> 465 (b'il') had 109 occurrences
+merge 211/256: (267, 438) -> 466 (b' Award') had 108 occurrences
+merge 212/256: (310, 437) -> 467 (b'ecord') had 108 occurrences
+merge 213/256: (266, 376) -> 468 (b'anuary') had 107 occurrences
+merge 214/256: (49, 51) -> 469 (b'13') had 106 occurrences
+merge 215/256: (460, 425) -> 470 (b'ountry') had 106 occurrences
+merge 216/256: (109, 256) -> 471 (b'mer') had 105 occurrences
+merge 217/256: (262, 101) -> 472 (b'one') had 105 occurrences
+merge 218/256: (32, 103) -> 473 (b' g') had 104 occurrences
+merge 219/256: (50, 49) -> 474 (b'21') had 103 occurrences
+merge 220/256: (265, 285) -> 475 (b'arch') had 103 occurrences
+merge 221/256: (111, 99) -> 476 (b'oc') had 101 occurrences
+merge 222/256: (310, 116) -> 477 (b'ect') had 100 occurrences
+merge 223/256: (105, 97) -> 478 (b'ia') had 98 occurrences
+merge 224/256: (118, 256) -> 479 (b'ver') had 98 occurrences
+merge 225/256: (226, 128) -> 480 (b'\xe2\x80') had 97 occurrences
+merge 226/256: (264, 263) -> 481 (b' She') had 96 occurrences
+merge 227/256: (297, 280) -> 482 (b' May') had 96 occurrences
+merge 228/256: (267, 108) -> 483 (b' Al') had 95 occurrences
+merge 229/256: (50, 51) -> 484 (b'23') had 95 occurrences
+merge 230/256: (370, 403) -> 485 (b' June') had 95 occurrences
+merge 231/256: (344, 378) -> 486 (b' music') had 94 occurrences
+merge 232/256: (49, 56) -> 487 (b'18') had 93 occurrences
+merge 233/256: (278, 387) -> 488 (b' Tim') had 91 occurrences
+merge 234/256: (421, 101) -> 489 (b'ive') had 90 occurrences
+merge 235/256: (345, 454) -> 490 (b' February') had 90 occurrences
+merge 236/256: (101, 101) -> 491 (b'ee') had 89 occurrences
+merge 237/256: (105, 266) -> 492 (b'ian') had 89 occurrences
+merge 238/256: (50, 52) -> 493 (b'24') had 89 occurrences
+merge 239/256: (471, 307) -> 494 (b'meric') had 88 occurrences
+merge 240/256: (49, 50) -> 495 (b'12') had 87 occurrences
+merge 241/256: (264, 463) -> 496 (b' September') had 87 occurrences
+merge 242/256: (306, 295) -> 497 (b' sing') had 86 occurrences
+merge 243/256: (32, 118) -> 498 (b' v') had 86 occurrences
+merge 244/256: (340, 336) -> 499 (b' was') had 86 occurrences
+merge 245/256: (267, 459) -> 500 (b' April') had 86 occurrences
+merge 246/256: (49, 55) -> 501 (b'17') had 84 occurrences
+merge 247/256: (50, 50) -> 502 (b'22') had 84 occurrences
+merge 248/256: (111, 103) -> 503 (b'og') had 83 occurrences
+merge 249/256: (119, 406) -> 504 (b'writ') had 83 occurrences
+merge 250/256: (78, 379) -> 505 (b'November') had 83 occurrences
+merge 251/256: (306, 386) -> 506 (b' song') had 82 occurrences
+merge 252/256: (49, 52) -> 507 (b'14') had 82 occurrences
+merge 253/256: (298, 104) -> 508 (b'igh') had 82 occurrences
+merge 254/256: (108, 100) -> 509 (b'ld') had 82 occurrences
+merge 255/256: (93, 10) -> 510 (b']\n') had 82 occurrences
+merge 256/256: (306, 263) -> 511 (b' she') had 82 occurrences
+Training took 23.63 seconds
+
+basic tokenizer: Original encode took 10.07 seconds
+basic tokennizer: New encode took 0.05 seconds
+original encode output == new encode output: False
+
+raw ids:
+[67, 111, 112, 121, 32, 112, 97, 115, 116, 101, 32, 111, 102, 32, 116, 104, 101, 32, 87, 105]
+
+original encode output:
+[67, 364, 273, 112, 97, 339, 256, 443, 87, 105, 107, 105, 112, 101, 436, 338, 271, 499, 467, 279]
+
+new encode output:
+[67, 364, 273, 112, 385, 116, 256, 351, 275, 87, 105, 107, 105, 112, 101, 436, 338, 271, 499, 397]
