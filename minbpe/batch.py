@@ -87,7 +87,7 @@ def _memoized_encode_to_list(text):
 
 class BatchTokenizer(Tokenizer):
 
-    def __init__(self, pattern=None):
+    def __init__(self, pattern=None, max_batch_size=512):
         """
         - pattern: optional string to override the default (GPT-4 split pattern)
         - special_tokens: str -> int dictionary of special tokens
@@ -98,13 +98,14 @@ class BatchTokenizer(Tokenizer):
         self.compiled_pattern = re.compile(self.pattern)
         self.special_tokens = {}
         self.inverse_special_tokens = {}
+        self.max_batch_size = max_batch_size
+        assert self.max_batch_size > 0
 
     def train(self, text, vocab_size, verbose=False):
         assert vocab_size >= 256
         num_merges = vocab_size - 256
         merges_remaining = num_merges
         curr_vocab_size = 256
-        max_batch_size = 512 # magic number, can be tuned, must be > 0
 
         # split the text up into text chunks
         text_chunks = re.findall(self.compiled_pattern, text)
@@ -123,7 +124,7 @@ class BatchTokenizer(Tokenizer):
             stats = get_stats(ids)
             # find the pairs with the highest counts
             # use min to make sure you don't consider pairs beyond the vocab size
-            top_pairs = nlargest(min(max_batch_size, merges_remaining), stats, key=stats.get)
+            top_pairs = nlargest(min(self.max_batch_size, merges_remaining), stats, key=stats.get)
             for first, last in top_pairs:  # pairs are (first, last) tuples
                 if first in seen_last or last in seen_first:
                     # skip this pair because it overlaps with a previous pair

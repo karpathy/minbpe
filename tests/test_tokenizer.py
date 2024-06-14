@@ -131,6 +131,16 @@ def test_save_load(special_tokens):
     for file in ["test_tokenizer_tmp.model", "test_tokenizer_tmp.vocab"]:
         os.remove(file)
 
+def test_max_batch_size_tuning():
+    # test that the max_batch_size can be tuned (default is 512)
+    tokenizer = BatchTokenizer(max_batch_size=16)
+    assert tokenizer.max_batch_size == 16
+
+def test_zero_max_batch_size():
+    # ensure that an assertion error is raised if max_batch_size < 1
+    with pytest.raises(AssertionError):
+        tokenizer = BatchTokenizer(max_batch_size=0)
+
 def test_batch_regex_equivalent():
     # show that batch and regex tokenizations are equivalent. They will have different
     # merges dict keys, but if the byte strings that those keys correspond to are
