@@ -163,3 +163,4 @@ class Tokenizer:
         self.merges = merges
         self.special_tokens = special_tokens
         self.vocab = self._build_vocab()
+        self.vocab_rev = {token:i for i, token in self.vocab.items()}
