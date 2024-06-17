@@ -68,6 +68,7 @@ class RegexTokenizer(Tokenizer):
         # save class variables
         self.merges = merges # used in encode()
         self.vocab = vocab   # used in decode()
+        self.vocab_rev = {token:i for i, token in vocab.items()}
 
     def register_special_tokens(self, special_tokens):
         # special_tokens is a dictionary of str -> int
@@ -90,23 +91,34 @@ class RegexTokenizer(Tokenizer):
         return text
 
     def _encode_chunk(self, text_bytes):
-        # return the token ids
-        # let's begin. first, convert all bytes to integers in range 0..255
-        ids = list(text_bytes)
-        while len(ids) >= 2:
-            # find the pair with the lowest merge index
-            stats = get_stats(ids)
-            pair = min(stats, key=lambda p: self.merges.get(p, float("inf")))
-            # subtle: if there are no more merges available, the key will
-            # result in an inf for every single pair, and the min will be
-            # just the first pair in the list, arbitrarily
-            # we can detect this terminating case by a membership check
-            if pair not in self.merges:
-                break # nothing else can be merged anymore
-            # otherwise let's merge the best pair (lowest merge index)
-            idx = self.merges[pair]
-            ids = merge(ids, pair, idx)
-        return ids
+        voc = self.vocab_rev
+
+        n = len(text_bytes)
+        dp = [float("inf") for _ in range(n)]
+        backtrack = [[-1] * n for _ in range(n)]
+
+        # at i'th iteration, dp[j] is the size of optimal tokenization of text_bytes[:j+1], for 0 < j < i-1, and
+        # backtrack[j] is the index of the first byte of the last token of an optimal tokenization.
+        for i in range(0, n):
+            if text_bytes[:i+1] in voc:
+                dp[i] = 1
+                backtrack[i] = 0
+                continue
+            for j in range(1, i+1):
+                if text_bytes[j:i+1] in voc:
+                    assert dp[j-1] >= 1
+                    if dp[i] > dp[j-1] + 1:
+                        dp[i] = dp[j-1] + 1
+                        backtrack[i] = j
+
+        # reconstruct the tokens from the backtrack table
+        def reconstruct_tokens(i):
+            if backtrack[i] == 0:
+                return [text_bytes[:i+1]]
+            k = backtrack[i]
+            return reconstruct_tokens(k-1) + [text_bytes[k:i+1]]
+
+        return [voc[token] for token in reconstruct_tokens(n - 1)]
 
     def encode_ordinary(self, text):
         """Encoding that ignores any special tokens."""
