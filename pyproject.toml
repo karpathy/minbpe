@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minbpe"
+version = "0.1.0"
+description = "Minimal, clean code for the (byte-level) Byte Pair Encoding (BPE) algorithm commonly used in LLM tokenization."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Andrej Karpathy", email = "andrej.karpathy@gmail.com" }
+]
+dependencies = [
+    "regex",
+    "tiktoken"
+]
+
+[project.urls]
+homepage = "https://github.com/karpathy/minbpe"
+
+[project.scripts]
+train = "minbpe.train:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["minbpe"]
