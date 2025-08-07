@@ -95,19 +95,29 @@ class RegexTokenizer(Tokenizer):
         ids = list(text_bytes)
         while len(ids) >= 2:
             # find the pair with the lowest merge index
-            stats = get_stats(ids)
-            pair = min(stats, key=lambda p: self.merges.get(p, float("inf")))
-            # subtle: if there are no more merges available, the key will
-            # result in an inf for every single pair, and the min will be
-            # just the first pair in the list, arbitrarily
-            # we can detect this terminating case by a membership check
-            if pair not in self.merges:
-                break # nothing else can be merged anymore
-            # otherwise let's merge the best pair (lowest merge index)
-            idx = self.merges[pair]
-            ids = merge(ids, pair, idx)
+            pair, idx = self.find_best_pair(ids)
+            if pair is not None:
+                ids = merge(ids, pair, idx) # merge the best pair
+            else:
+                break # nothing else can be merged
+                
         return ids
 
+    def find_best_pair(self, cur_ids):
+        """ Find the pair with the lowest merge index"""
+
+        cur_stats = get_stats(cur_ids)
+
+        best_pair = None
+        best_score = float('inf')
+
+        for p in cur_stats:
+            score = self.merges.get(p)
+            if score is not None and score < best_score:
+                best_score = score
+                best_pair = p
+        return best_pair, best_score
+    
     def encode_ordinary(self, text):
         """Encoding that ignores any special tokens."""
         # split text into chunks of text by categories defined in regex pattern
