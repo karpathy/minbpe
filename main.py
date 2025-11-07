@@ -1,5 +1,5 @@
 def main():
-    print("Hello from minbpe!")
+    raise NotImplementedError()
 
 
 if __name__ == "__main__":
