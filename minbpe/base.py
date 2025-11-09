@@ -5,27 +5,44 @@ It would be possible to be a lot more strict about the interface and
 e.g. isolating all regex/pattern parts to the RegexTokenizer, but
 some concessions are made for simplicity.
 """
+
 import unicodedata
+from collections import Counter
 
 # -----------------------------------------------------------------------------
 # a few helper functions useful for both BasicTokenizer and RegexTokenizer
 
-def get_stats(ids, counts=None):
+def get_stats(ids:list[int], counts:Counter[tuple[int, int]]=None):
     """
     Given a list of integers, return a dictionary of counts of consecutive pairs
     Example: [1, 2, 3, 1, 2] -> {(1, 2): 2, (2, 3): 1, (3, 1): 1}
     Optionally allows to update an existing dictionary of counts
     """
-    raise NotImplementedError()
+    counts = counts or Counter()
+    # iterate consecutive elements
+    for pair in zip(ids, ids[1:]):
+        counts[pair] += 1
+    return counts
 
 
-def merge(ids, pair, idx):
+def merge(tokens: list[int], pair: tuple[int, int], merged_token: int) -> list[int]:
     """
     In the list of integers (ids), replace all consecutive occurrences
     of pair with the new integer token idx
     Example: ids=[1, 2, 3, 1, 2], pair=(1, 2), idx=4 -> [4, 3, 4]
     """
-    raise NotImplementedError()
+    new_tokens = []
+    i = 0
+    while i < len(tokens):
+        # if not at the very last position AND the pair matches, replace it
+        if i < len(tokens) - 1 and tokens[i] == pair[0] and tokens[i+1] == pair[1]:
+            new_tokens.append(merged_token)
+            i += 2
+        else:
+            new_tokens.append(tokens[i])
+            i += 1
+    return new_tokens
+    
 
 # first two helper functions...
 def replace_control_characters(s: str) -> str:
