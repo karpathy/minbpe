@@ -8,3 +8,12 @@ dependencies = [
     "regex>=2025.10.23",
     "tiktoken>=0.12.0",
 ]
+
+[dependency-groups]
+dev = [
+    "black",
+    "pytest",
+    "ruff",
+    "isort",
+    "flake8",
+]
