@@ -15,6 +15,10 @@ def test_merge():
     merged_token = 4
     new_tokens = merge(tokens, pair, merged_token)
     assert new_tokens == [4, 3, 4]
-
-if __name__ == "__main__":
-    pytest.main(sys.argv[1:] + ["--verbose", "--verbose", "--verbose"])
+    
+def test_merge_no_merge():
+    tokens = [1, 2, 3, 4, 5]
+    pair = (1, 21)
+    merged_token = 6
+    new_tokens = merge(tokens, pair, merged_token)
+    assert new_tokens == tokens
