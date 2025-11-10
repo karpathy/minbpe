@@ -11,9 +11,15 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "ipython>=9.7.0",
     "black",
     "pytest",
     "ruff",
     "isort",
     "flake8",
+]
+[tool.pytest.ini_options]
+
+addopts = [
+    "-vvv",
 ]
