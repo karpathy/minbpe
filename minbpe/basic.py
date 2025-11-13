@@ -63,13 +63,16 @@ class BasicTokenizer(Tokenizer):
         self.vocab = vocab  # used in decode()
 
     def decode(self, ids: list[int]) -> str:
-        raise NotImplementedError()
+        """given ids (list of integers), return Python string"""
+        tokens = b"".join(self.vocab[idx] for idx in ids)
+        text = tokens.decode("utf-8", errors="replace")
+        return text
 
     def encode(self, text: str) -> list[int]:
         # given a string text, return the token ids
         text_bytes = text.encode("utf-8")  # raw bytes
         ids = list(text_bytes)  # list of integers in range 0..255
-        # this prevnets merges less than 2 tokens
+        # this prevents merges less than 2 tokens
         while len(ids) >= 2:
             # find the pair with the lowest merge index
             stats = get_stats(ids)

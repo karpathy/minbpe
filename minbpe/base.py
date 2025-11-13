@@ -14,7 +14,10 @@ import unicodedata
 # -----------------------------------------------------------------------------
 # a few helper functions useful for both BasicTokenizer and RegexTokenizer
 
-def get_stats(ids:list[int], counts:Counter[tuple[int, int]]=None) -> Counter[tuple[int, int]]:
+
+def get_stats(
+    ids: list[int], counts: Counter[tuple[int, int]] = None
+) -> Counter[tuple[int, int]]:
     """
     Given a list of integers, return a dictionary of counts of consecutive pairs
     Example: [1, 2, 3, 1, 2] -> {(1, 2): 2, (2, 3): 1, (3, 1): 1}
@@ -27,23 +30,24 @@ def get_stats(ids:list[int], counts:Counter[tuple[int, int]]=None) -> Counter[tu
     return counts
 
 
-def merge(ids, pair, idx):
+def merge(tokens: list[int], pair: tuple[int, int], merged_token: int) -> list[int]:
     """
     In the list of integers (ids), replace all consecutive occurrences
     of pair with the new integer token idx
     Example: ids=[1, 2, 3, 1, 2], pair=(1, 2), idx=4 -> [4, 3, 4]
     """
-    newids = []
+    new_tokens = []
     i = 0
-    while i < len(ids):
+    while i < len(tokens):
         # if not at the very last position AND the pair matches, replace it
-        if ids[i] == pair[0] and i < len(ids) - 1 and ids[i+1] == pair[1]:
-            newids.append(idx)
+        if i < len(tokens) - 1 and tokens[i] == pair[0] and tokens[i + 1] == pair[1]:
+            new_tokens.append(merged_token)
             i += 2
         else:
-            newids.append(ids[i])
+            new_tokens.append(tokens[i])
             i += 1
-    return newids
+    return new_tokens
+
 
 # first two helper functions...
 def replace_control_characters(s: str) -> str:
@@ -54,30 +58,35 @@ def replace_control_characters(s: str) -> str:
     chars = []
     for ch in s:
         if unicodedata.category(ch)[0] != "C":
-            chars.append(ch) # this character is ok
+            chars.append(ch)  # this character is ok
         else:
-            chars.append(f"\\u{ord(ch):04x}") # escape
+            chars.append(f"\\u{ord(ch):04x}")  # escape
     return "".join(chars)
+
 
 def render_token(t: bytes) -> str:
     # pretty print a token, escaping control characters
-    s = t.decode('utf-8', errors='replace')
+    s = t.decode("utf-8", errors="replace")
     s = replace_control_characters(s)
     return s
 
+
 # -----------------------------------------------------------------------------
 # the base Tokenizer class
+
 
 class Tokenizer:
     """Base class for Tokenizers"""
 
     def __init__(self) -> None:
-        # default: vocab size of 256 (all bytes), no merges, no patterns
+        # default: vocab size of 256 (all bytes), no merges, no pattern
         self.merges: dict[tuple[int, int], int] = {}
         # no regex pattern for base model
-        self.patterns: str = ""
-        self.special_tokens: dict[str, int] = {} # str -> int, e.g. {'<|endoftext|>': 100257}
-        self.vocab = ... # int -> bytes
+        self.pattern: str = ""
+        self.special_tokens: dict[
+            str, int
+        ] = {}  # str -> int, e.g. {'<|endoftext|>': 100257}
+        self.vocab = ...  # int -> bytes
 
     def train(self, text, vocab_size, verbose=False):
         # Tokenizer can train a vocabulary of size vocab_size from text
@@ -110,7 +119,7 @@ class Tokenizer:
         """
         # write the model: to be used in load() later
         model_file = file_prefix + ".model"
-        with open(model_file, 'w') as f:
+        with open(model_file, "w") as f:
             # write the version, pattern and merges, that's all that's needed
             f.write("minbpe v1\n")
             f.write(f"{self.pattern}\n")
@@ -151,7 +160,7 @@ class Tokenizer:
         merges = {}
         special_tokens = {}
         idx = 256
-        with open(model_file, 'r', encoding="utf-8") as f:
+        with open(model_file, "r", encoding="utf-8") as f:
             # read the version
             version = f.readline().strip()
             assert version == "minbpe v1"
