@@ -11,6 +11,8 @@ from collections import Counter
 import unicodedata
 
 
+MIN_VOCAB_SIZE = 256
+
 # -----------------------------------------------------------------------------
 # a few helper functions useful for both BasicTokenizer and RegexTokenizer
 
@@ -86,7 +88,11 @@ class Tokenizer:
         self.special_tokens: dict[
             str, int
         ] = {}  # str -> int, e.g. {'<|endoftext|>': 100257}
-        self.vocab = ...  # int -> bytes
+        self.vocab = self._build_vocab()  # int -> bytes
+
+    @staticmethod
+    def _simple_num_merges(vocab_size: int) -> int:
+        return vocab_size - MIN_VOCAB_SIZE
 
     def train(self, text, vocab_size, verbose=False):
         # Tokenizer can train a vocabulary of size vocab_size from text

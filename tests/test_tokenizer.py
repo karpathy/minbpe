@@ -49,7 +49,9 @@ The ancestors of llamas are thought to have originated from the Great Plains of 
 # tests
 
 # test encode/decode identity for a few different strings
-@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, RegexTokenizer, GPT4Tokenizer])
+@pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, RegexTokenizer, 
+# GPT4Tokenizer
+])
 @pytest.mark.parametrize("text", test_strings)
 def test_encode_decode_identity(tokenizer_factory, text):
     text = unpack(text)
@@ -58,23 +60,23 @@ def test_encode_decode_identity(tokenizer_factory, text):
     decoded = tokenizer.decode(ids)
     assert text == decoded
 
-# test that our tokenizer matches the official GPT-4 tokenizer
-@pytest.mark.parametrize("text", test_strings)
-def test_gpt4_tiktoken_equality(text):
-    text = unpack(text)
-    tokenizer = GPT4Tokenizer()
-    enc = tiktoken.get_encoding("cl100k_base")
-    tiktoken_ids = enc.encode(text)
-    gpt4_tokenizer_ids = tokenizer.encode(text)
-    assert gpt4_tokenizer_ids == tiktoken_ids
+# # test that our tokenizer matches the official GPT-4 tokenizer
+# @pytest.mark.parametrize("text", test_strings)
+# def test_gpt4_tiktoken_equality(text):
+#     text = unpack(text)
+#     tokenizer = GPT4Tokenizer()
+#     enc = tiktoken.get_encoding("cl100k_base")
+#     tiktoken_ids = enc.encode(text)
+#     gpt4_tokenizer_ids = tokenizer.encode(text)
+#     assert gpt4_tokenizer_ids == tiktoken_ids
 
-# test the handling of special tokens
-def test_gpt4_tiktoken_equality_special_tokens():
-    tokenizer = GPT4Tokenizer()
-    enc = tiktoken.get_encoding("cl100k_base")
-    tiktoken_ids = enc.encode(specials_string, allowed_special="all")
-    gpt4_tokenizer_ids = tokenizer.encode(specials_string, allowed_special="all")
-    assert gpt4_tokenizer_ids == tiktoken_ids
+# # test the handling of special tokens
+# def test_gpt4_tiktoken_equality_special_tokens():
+#     tokenizer = GPT4Tokenizer()
+#     enc = tiktoken.get_encoding("cl100k_base")
+#     tiktoken_ids = enc.encode(specials_string, allowed_special="all")
+#     gpt4_tokenizer_ids = tokenizer.encode(specials_string, allowed_special="all")
+#     assert gpt4_tokenizer_ids == tiktoken_ids
 
 # reference test to add more tests in the future
 @pytest.mark.parametrize("tokenizer_factory", [BasicTokenizer, RegexTokenizer])

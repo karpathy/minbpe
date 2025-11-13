@@ -9,26 +9,20 @@ But:
 - Does not handle any special tokens.
 """
 
-from .base import Tokenizer, get_stats, merge
-
-MIN_VOCAB_SIZE = 256
+from minbpe.base import MIN_VOCAB_SIZE, Tokenizer, get_stats, merge
 
 
 class BasicTokenizer(Tokenizer):
     def __init__(self):
         super().__init__()
 
-    @staticmethod
-    def _simple_num_merges(vocab_size: int) -> int:
-        return vocab_size - MIN_VOCAB_SIZE
-
     def train(
         self, text: str, vocab_size: int, num_merges: int = None, verbose: bool = False
     ) -> None:
-        assert vocab_size >= MIN_VOCAB_SIZE, "vocab_size must be greater than 256"
+        assert vocab_size >= MIN_VOCAB_SIZE, "vocab_size can't be less than 256"
         if num_merges is None:
             num_merges = self._simple_num_merges(vocab_size)
-        assert num_merges > 0, "num_merges must be greater than 0"
+        assert num_merges > 0, "num_merges can't be less than 0"
 
         # input text preprocessing
         text_bytes = text.encode("utf-8")  # raw bytes
