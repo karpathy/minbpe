@@ -13,15 +13,19 @@ from minbpe.base import MIN_VOCAB_SIZE, Tokenizer, get_stats, merge
 
 
 class BasicTokenizer(Tokenizer):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
 
     def train(
-        self, text: str, vocab_size: int, num_merges: int = None, verbose: bool = False
+        self,
+        text: str,
+        vocab_size: int,
+        num_merges: int | None = None,
+        verbose: bool = False,
     ) -> None:
         assert vocab_size >= MIN_VOCAB_SIZE, "vocab_size can't be less than 256"
         if num_merges is None:
-            num_merges = self._simple_num_merges(vocab_size)
+            num_merges = vocab_size - 256
         assert num_merges > 0, "num_merges can't be less than 0"
 
         # input text preprocessing
@@ -38,7 +42,7 @@ class BasicTokenizer(Tokenizer):
             # count up the number of times every consecutive pair appears
             stats = get_stats(token_ids)
             # find the pair with the highest count
-            pair = stats.most_common(1)[0][0]
+            pair = max(stats, key=stats.get)
             # mint a new token: assign it the next available id
             new_token = MIN_VOCAB_SIZE + i
             # replace all occurrences of pair in ids with idx

@@ -6,10 +6,10 @@ e.g. isolating all regex/pattern parts to the RegexTokenizer, but
 some concessions are made for simplicity.
 """
 
-from itertools import pairwise
 from collections import Counter
-import unicodedata
+from itertools import pairwise
 
+import unicodedata
 
 MIN_VOCAB_SIZE = 256
 
@@ -18,37 +18,36 @@ MIN_VOCAB_SIZE = 256
 
 
 def get_stats(
-    ids: list[int], counts: Counter[tuple[int, int]] = None
+    ids: list[int], counts: Counter[tuple[int, int]] | None = None
 ) -> Counter[tuple[int, int]]:
     """
     Given a list of integers, return a dictionary of counts of consecutive pairs
     Example: [1, 2, 3, 1, 2] -> {(1, 2): 2, (2, 3): 1, (3, 1): 1}
     Optionally allows to update an existing dictionary of counts
     """
-    counts = counts or Counter()
-    # iterate consecutive elements
-    for pair in pairwise(ids):
-        counts[pair] += 1
+    counts = Counter() if counts is None else counts
+    for pair in pairwise(ids):  # iterate consecutive elements
+        counts[pair] = counts.get(pair, 0) + 1
     return counts
 
 
-def merge(tokens: list[int], pair: tuple[int, int], merged_token: int) -> list[int]:
+def merge(ids: list[int], pair: tuple[int, int], idx: int) -> list[int]:
     """
     In the list of integers (ids), replace all consecutive occurrences
     of pair with the new integer token idx
     Example: ids=[1, 2, 3, 1, 2], pair=(1, 2), idx=4 -> [4, 3, 4]
     """
-    new_tokens = []
+    newids = []
     i = 0
-    while i < len(tokens):
+    while i < len(ids):
         # if not at the very last position AND the pair matches, replace it
-        if i < len(tokens) - 1 and tokens[i] == pair[0] and tokens[i + 1] == pair[1]:
-            new_tokens.append(merged_token)
+        if ids[i] == pair[0] and i < len(ids) - 1 and ids[i + 1] == pair[1]:
+            newids.append(idx)
             i += 2
         else:
-            new_tokens.append(tokens[i])
+            newids.append(ids[i])
             i += 1
-    return new_tokens
+    return newids
 
 
 # first two helper functions...
@@ -81,28 +80,23 @@ class Tokenizer:
     """Base class for Tokenizers"""
 
     def __init__(self) -> None:
-        # default: vocab size of 256 (all bytes), no merges, no pattern
-        self.merges: dict[tuple[int, int], int] = {}
-        # no regex pattern for base model
-        self.pattern: str = ""
+        # default: vocab size of 256 (all bytes), no merges, no patterns
+        self.merges: dict[tuple[int, int], int] = {}  # (int, int) -> int
+        self.pattern: str = ""  # str
         self.special_tokens: dict[
             str, int
         ] = {}  # str -> int, e.g. {'<|endoftext|>': 100257}
-        self.vocab = self._build_vocab()  # int -> bytes
+        self.vocab: dict[int, bytes] = self._build_vocab()  # int -> bytes
 
-    @staticmethod
-    def _simple_num_merges(vocab_size: int) -> int:
-        return vocab_size - MIN_VOCAB_SIZE
-
-    def train(self, text, vocab_size, verbose=False):
+    def train(self, text: str, vocab_size: int, verbose: bool = False) -> None:
         # Tokenizer can train a vocabulary of size vocab_size from text
         raise NotImplementedError
 
-    def encode(self, text):
+    def encode(self, text: str) -> list[int]:
         # Tokenizer can encode a string into a list of integers
         raise NotImplementedError
 
-    def decode(self, ids):
+    def decode(self, ids: list[int]) -> str:
         # Tokenizer can decode a list of integers into a string
         raise NotImplementedError
 
@@ -110,13 +104,12 @@ class Tokenizer:
         # vocab is simply and deterministically derived from merges
         vocab = {idx: bytes([idx]) for idx in range(256)}
         for (p0, p1), idx in self.merges.items():
-            # concate two bytes
             vocab[idx] = vocab[p0] + vocab[p1]
         for special, idx in self.special_tokens.items():
             vocab[idx] = special.encode("utf-8")
         return vocab
 
-    def save(self, file_prefix):
+    def save(self, file_prefix: str) -> None:
         """
         Saves two files: file_prefix.vocab and file_prefix.model
         This is inspired (but not equivalent to!) sentencepiece's model saving:
@@ -159,12 +152,12 @@ class Tokenizer:
                     # (this should just be the first 256 tokens, the bytes)
                     f.write(f"[{s}] {idx}\n")
 
-    def load(self, model_file):
+    def load(self, model_file: str) -> None:
         """Inverse of save() but only for the model file"""
         assert model_file.endswith(".model")
         # read the model file
-        merges = {}
-        special_tokens = {}
+        merges: dict[tuple[int, int], int] = {}
+        special_tokens: dict[str, int] = {}
         idx = 256
         with open(model_file, "r", encoding="utf-8") as f:
             # read the version
