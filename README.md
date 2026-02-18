@@ -130,6 +130,8 @@ to run the tests. (-v is verbose, slightly prettier).
 
 * [gnp/minbpe-rs](https://github.com/gnp/minbpe-rs): A Rust implementation of `minbpe` providing (near) one-to-one correspondence with the Python version
 
+* [hyunussarioglu/minbpe-c](https://github.com/hyunussarioglu/minbpe-c): A clean, lightweight C port of `minbpe` with identical logic and improved training performance.
+
 ## exercise
 
 For those trying to study BPE, here is the advised progression exercise for how you can build your own minbpe step by step. See [exercise.md](exercise.md).
