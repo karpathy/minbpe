@@ -90,8 +90,8 @@ def test_wikipedia_example(tokenizer_factory):
     "XdXac"
 
     where:
-    X=ZY
-    Y=ab
+    X=Yb
+    Y=Za
     Z=aa
 
     Keep in mind that for us a=97, b=98, c=99, d=100 (ASCII values)
