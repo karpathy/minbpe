@@ -90,12 +90,17 @@ def test_wikipedia_example(tokenizer_factory):
     "XdXac"
 
     where:
-    X=ZY
-    Y=ab
     Z=aa
+    Y=Za (i.e. aaa)
+    X=Yb (i.e. aaab)
 
     Keep in mind that for us a=97, b=98, c=99, d=100 (ASCII values)
     so Z will be 256, Y will be 257, X will be 258.
+
+    Merge sequence:
+    1. (97, 97) -> 256 (Z=aa), most frequent pair (4 occurrences)
+    2. (256, 97) -> 257 (Y=Za=aaa), most frequent pair (2 occurrences)
+    3. (257, 98) -> 258 (X=Yb=aaab), most frequent pair (2 occurrences)
 
     So we expect the output list of ids to be [258, 100, 258, 97, 99]
     """
